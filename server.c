@@ -2,8 +2,8 @@
 #include "src/Helpers/routing.h"
 #include "src/Helpers/file_io.h"
 
-static const char *s_http_addr = "http://localhost:8000";    // HTTP port
-static const char *s_https_addr = "https://localhost:8443";  // HTTPS port
+static const char *s_http_addr = "http://127.0.0.1:80";    // HTTP port
+static const char *s_https_addr = "https://127.0.0.1:443";  // HTTPS port
 #ifdef TLS_TWOWAY
 static const char *s_tls_ca =
     "-----BEGIN CERTIFICATE-----\n"
@@ -178,6 +178,5 @@ int main(int argc, char** args) {
   mg_http_listen(&mgr, s_https_addr, handle_routes, (void *) 1);  // HTTPS listener
   for (;;) mg_mgr_poll(&mgr, 1000); 
   mg_mgr_free(&mgr);
-  return 0;
   return 0;
 }

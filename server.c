@@ -2,8 +2,8 @@
 #include "src/Helpers/routing.h"
 #include "src/Helpers/file_io.h"
 
-static const char *s_http_addr = "http://localhost:8000";    // HTTP port
-static const char *s_https_addr = "https://localhost:8443";  // HTTPS port
+static const char *s_http_addr = "http://127.0.0.1:80";    // HTTP port
+static const char *s_https_addr = "https://127.0.0.1:443";  // HTTPS port
 #ifdef TLS_TWOWAY
 static const char *s_tls_ca =
     "-----BEGIN CERTIFICATE-----\n"
@@ -136,6 +136,7 @@ static void route_static(struct mg_connection *nc, struct mg_http_message* msg) 
 
 static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void* fn_data) {
     /**ROUTING*/
+
     struct mg_http_message *msg = (struct mg_http_message *) ev_data;
     if (msg == NULL) return;
     if (ev == MG_EV_HTTP_MSG) {
@@ -163,21 +164,24 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
     (void) ev_data;
 }
 
-int main(int argc, char** args) {
+int main() {
   struct mg_mgr mgr;
+
   mg_log_set(MG_LL_DEBUG);
-//     struct mg_tls_opts opts = {
-//     #ifdef TLS_TWOWAY
-//                              .client_ca = mg_str(s_tls_ca),
-//     #endif
-//                              .server_cert = mg_str(s_tls_cert),
-//                              .server_key = mg_str(s_tls_key)};
-//   mg_tls_ctx_init(&mgr, &opts);
-  mg_mgr_init(&mgr);  
-  mg_http_listen(&mgr, s_http_addr, handle_routes, NULL);  // Create HTTP listener
-  mg_http_listen(&mgr, s_https_addr, handle_routes, (void *) 1);  // HTTPS listener
-  for (;;) mg_mgr_poll(&mgr, 1000); 
+  mg_mgr_init(&mgr);
+  mg_http_listen(&mgr, s_http_addr, handle_routes, NULL); // HTTP listener
+
+  // HTTPS listener
+  mg_http_listen(&mgr, s_https_addr, handle_routes, (void*) 1);
+
+    // struct mg_tls_opts opts = {
+    //     .server_cert = mg_str(s_tls_cert),
+    //     .server_key = mg_str(s_tls_key),
+    // };
+    
+    // mg_tls_init(nc, mg_str(&opts));
+  
+  for (;;) mg_mgr_poll(&mgr, 1000);
   mg_mgr_free(&mgr);
-  return 0;
   return 0;
 }

@@ -138,6 +138,8 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
     /**ROUTING*/
     struct mg_http_message *msg = (struct mg_http_message *) ev_data;
     if (msg == NULL) return;
+
+    // If s_url is https://, tell client connection to use TLS
     if (ev == MG_EV_HTTP_MSG) {
         printf("%s", msg->uri);
         if (mg_http_match_uri(msg, "/home") || mg_http_match_uri(msg, "/home/#")) {
@@ -166,16 +168,9 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
 int main(int argc, char** args) {
   struct mg_mgr mgr;
   mg_log_set(MG_LL_DEBUG);
-//     struct mg_tls_opts opts = {
-//     #ifdef TLS_TWOWAY
-//                              .client_ca = mg_str(s_tls_ca),
-//     #endif
-//                              .server_cert = mg_str(s_tls_cert),
-//                              .server_key = mg_str(s_tls_key)};
-//   mg_tls_ctx_init(&mgr, &opts);
   mg_mgr_init(&mgr);  
-  mg_http_listen(&mgr, s_http_addr, handle_routes, NULL);  // Create HTTP listener
-//   mg_http_listen(&mgr, s_https_addr, handle_routes, (void *) 1);  // HTTPS listener
+  mg_http_listen(&mgr, s_http_addr, handle_routes, NULL);  // HTTP 
+//   mg_http_listen(&mgr, s_https_addr, handle_routes, (void *) 1);  // HTTPS 
   for (;;) mg_mgr_poll(&mgr, 1000); 
   mg_mgr_free(&mgr);
   return 0;

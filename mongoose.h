@@ -390,6 +390,8 @@ static inline int mg_mkdir(const char *path, mode_t mode) {
 #include <time.h>
 #include <unistd.h>
 
+
+
 #ifndef MG_ENABLE_DIRLIST
 #define MG_ENABLE_DIRLIST 1
 #endif
@@ -810,9 +812,6 @@ struct timeval {
 #define MG_EPOLL_ADD(c)
 #define MG_EPOLL_MOD(c, wr)
 #endif
-
-
-
 
 struct mg_str {
   const char *ptr;  // Pointer to string data
@@ -1326,13 +1325,11 @@ void mg_http_serve_ssi(struct mg_connection *c, const char *root,
 #define MG_TLS_CUSTOM 4   // Custom implementation
 
 #ifndef MG_TLS
-#define MG_TLS MG_TLS_NONE
+#define MG_TLS MG_TLS_OPENSSL
 #endif
 
-
-
-
-
+#ifndef _MG_TLS_OPTS_
+#define _MG_TLS_OPTS_
 struct mg_tls_opts {
   struct mg_str client_ca;
   struct mg_str server_ca;
@@ -1341,6 +1338,7 @@ struct mg_tls_opts {
   struct mg_str client_cert;
   struct mg_str client_key;
 };
+#endif
 
 void mg_tls_ctx_init(struct mg_mgr *, const struct mg_tls_opts *);
 void mg_tls_ctx_free(struct mg_mgr *);

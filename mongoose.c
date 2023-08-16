@@ -5883,7 +5883,7 @@ static bool load_cert(struct mg_str str, mbedtls_x509_crt *p) {
   if (str.ptr == NULL || str.ptr[0] == '\0' || str.ptr[0] == '*') return true;
   if (str.ptr[0] == '-') str.len++;  // PEM, include trailing NUL
   if ((rc = mbedtls_x509_crt_parse(p, (uint8_t *) str.ptr, str.len)) != 0) {
-    MG_ERROR(("cert err %#x", -rc));
+    MG_ERROR(("cert err %#x, cert: %s", -rc, str));
     return false;
   }
   return true;
@@ -5902,9 +5902,14 @@ static bool load_key(struct mg_str str, mbedtls_pk_context *p) {
 }
 
 void mg_tls_ctx_init(struct mg_mgr *mgr, const struct mg_tls_opts *opts) {
-  struct mg_tls_ctx *ctx = (struct mg_tls_ctx *) calloc(1, sizeof(*ctx));
+  
+  FILE *file = fopen("dummy.txt", "w");
+  if (file != NULL) fprintf(file, "Enter\n");
+
+  struct mg_tls_ctx *ctx = (struct mg_tls_ctx *) calloc(1, sizeof(struct mg_tls_ctx ));
   if (ctx == NULL) goto fail;
   MG_DEBUG(("Setting up TLS context"));
+  if (file != NULL) fprintf(file, "not null\n");
 
 #if defined(MG_MBEDTLS_DEBUG_LEVEL)
   mbedtls_debug_set_threshold(MG_MBEDTLS_DEBUG_LEVEL);
@@ -5916,6 +5921,11 @@ void mg_tls_ctx_init(struct mg_mgr *mgr, const struct mg_tls_opts *opts) {
   if (!load_cert(opts->server_cert, &ctx->server_cert)) goto fail;
   if (!load_key(opts->server_key, &ctx->server_key)) goto fail;
   if (!load_key(opts->client_key, &ctx->client_key)) goto fail;
+
+  // Close the file
+  if (file != NULL) {fprintf(file, "Success\n", ctx->client_key);
+    fclose(file);}
+
 
 #ifdef MBEDTLS_SSL_SESSION_TICKETS
   {
@@ -5932,6 +5942,7 @@ void mg_tls_ctx_init(struct mg_mgr *mgr, const struct mg_tls_opts *opts) {
   mgr->tls_ctx = ctx;
   return;
 fail:
+  mg_log("FAIL: mg_tls_init");
   mg_tls_ctx_free(mgr);
 }
 

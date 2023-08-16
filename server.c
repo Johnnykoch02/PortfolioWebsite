@@ -1,42 +1,24 @@
-#include "./mongoose.h"
+#include "mongoose.h"
 #include "src/Helpers/routing.h"
 #include "src/Helpers/file_io.h"
 
+static const char *s_url = "https://jonathanzkoch.dev:443";
 static const char *s_http_addr = "http://0.0.0.0:80";    // HTTP port
 static const char *s_https_addr = "https://0.0.0.0:443";  // HTTPS port
-#ifdef TLS_TWOWAY
-static const char *s_tls_ca =
-    "-----BEGIN CERTIFICATE-----\n"
-    "MIIBqjCCAU+gAwIBAgIUESoOPGqMhf9uarzblVFwzrQweMcwCgYIKoZIzj0EAwIw\n"
-    "RDELMAkGA1UEBhMCSUUxDzANBgNVBAcMBkR1YmxpbjEQMA4GA1UECgwHQ2VzYW50\n"
-    "YTESMBAGA1UEAwwJVGVzdCBSb290MCAXDTIwMDUwOTIxNTE0NFoYDzIwNTAwNTA5\n"
-    "MjE1MTQ0WjBEMQswCQYDVQQGEwJJRTEPMA0GA1UEBwwGRHVibGluMRAwDgYDVQQK\n"
-    "DAdDZXNhbnRhMRIwEAYDVQQDDAlUZXN0IFJvb3QwWTATBgcqhkjOPQIBBggqhkjO\n"
-    "PQMBBwNCAAQsq9ECZiSW1xI+CVBP8VDuUehVA166sR2YsnJ5J6gbMQ1dUCH/QvLa\n"
-    "dBdeU7JlQcH8hN5KEbmM9BnZxMor6ussox0wGzAMBgNVHRMEBTADAQH/MAsGA1Ud\n"
-    "DwQEAwIBrjAKBggqhkjOPQQDAgNJADBGAiEAnHFsAIwGQQyRL81B04dH6d86Iq0l\n"
-    "fL8OKzndegxOaB0CIQCPwSIwEGFdURDqCC0CY2dnMrUGY5ZXu3hHCojZGS7zvg==\n"
-    "-----END CERTIFICATE-----\n";
-#endif
-static const char *s_tls_cert =
-    "-----BEGIN CERTIFICATE-----\n"
-    "MIIBhzCCASygAwIBAgIUbnMoVd8TtWH1T09dANkK2LU6IUswCgYIKoZIzj0EAwIw\n"
-    "RDELMAkGA1UEBhMCSUUxDzANBgNVBAcMBkR1YmxpbjEQMA4GA1UECgwHQ2VzYW50\n"
-    "YTESMBAGA1UEAwwJVGVzdCBSb290MB4XDTIwMDUwOTIxNTE0OVoXDTMwMDUwOTIx\n"
-    "NTE0OVowETEPMA0GA1UEAwwGc2VydmVyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcD\n"
-    "QgAEkuBGnInDN6l06zVVQ1VcrOvH5FDu9MC6FwJc2e201P8hEpq0Q/SJS2nkbSuW\n"
-    "H/wBTTBaeXN2uhlBzMUWK790KKMvMC0wCQYDVR0TBAIwADALBgNVHQ8EBAMCA6gw\n"
-    "EwYDVR0lBAwwCgYIKwYBBQUHAwEwCgYIKoZIzj0EAwIDSQAwRgIhAPo6xx7LjCdZ\n"
-    "QY133XvLjAgVFrlucOZHONFVQuDXZsjwAiEAzHBNligA08c5U3SySYcnkhurGg50\n"
-    "BllCI0eYQ9ggp/o=\n"
-    "-----END CERTIFICATE-----\n";
 
-static const char *s_tls_key =
-    "-----BEGIN PRIVATE KEY-----\n"
-    "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQglNni0t9Dg9icgG8w\n"
-    "kbfxWSS+TuNgbtNybIQXcm3NHpmhRANCAASS4EacicM3qXTrNVVDVVys68fkUO70\n"
-    "wLoXAlzZ7bTU/yESmrRD9IlLaeRtK5Yf/AFNMFp5c3a6GUHMxRYrv3Qo\n"
-    "-----END PRIVATE KEY-----\n";
+char *s_tls_ca;
+char *s_tls_cert;
+char *s_tls_key;
+char *c_tls_ca;
+char *c_tls_cert;
+char *c_tls_key;
+
+char* server_ca_f = "ca.pem";
+char* server_cert_f = "cert.pem";
+char* server_key_f = "key.pem";
+char* client_ca_f = "client_ca.pem";
+char* client_cert_f = "client_cert.ca";
+char* client_key_f = "client_key.pem";
 
 static void redirect_to_home(struct mg_connection *nc) {
   const char *html_redirect = "<!DOCTYPE html>"
@@ -139,8 +121,20 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
     struct mg_http_message *msg = (struct mg_http_message *) ev_data;
     if (msg == NULL) return;
 
-    // If s_url is https://, tell client connection to use TLS
-    if (ev == MG_EV_HTTP_MSG) {
+    struct mg_tls_opts opts = {
+            // .server_ca = mg_str(s_tls_ca),
+            .server_cert = mg_str(c_tls_cert),
+            .server_key = mg_str(c_tls_key),
+            // .client_ca = mg_str(c_tls_ca),
+            .client_cert = mg_str(s_tls_cert),
+            .client_key = mg_str(s_tls_key)
+        };
+    if (ev != MG_EV_POLL) mg_tls_ctx_init(nc->mgr, &opts);
+    if (ev == MG_EV_ACCEPT) {
+        printf("HTTP Secure");
+        mg_tls_init(nc, mg_str(s_url));
+    }
+    else if (ev == MG_EV_HTTP_MSG) {
         printf("%s", msg->uri);
         if (mg_http_match_uri(msg, "/home") || mg_http_match_uri(msg, "/home/#")) {
             route_home(nc, ev, ev_data, msg);
@@ -166,11 +160,16 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
 }
 
 int main(int argc, char** args) {
+  /* HTTPS Certificates*/
+  struct server_certs certs;
+  load_certificates(&certs);
+  s_tls_ca = certs.s.ca; s_tls_cert = certs.s.cert; s_tls_key = certs.s.key;
+  c_tls_ca = certs.c.ca; c_tls_cert = certs.c.cert; c_tls_key = certs.c.key;
   struct mg_mgr mgr;
   mg_log_set(MG_LL_DEBUG);
   mg_mgr_init(&mgr);  
-  mg_http_listen(&mgr, s_http_addr, handle_routes, NULL);  // HTTP 
-//   mg_http_listen(&mgr, s_https_addr, handle_routes, (void *) 1);  // HTTPS 
+//   mg_http_listen(&mgr, s_http_addr, handle_routes, NULL);  // HTTP 
+  mg_http_listen(&mgr, s_https_addr, handle_routes, (void *) 1);  // HTTPS 
   for (;;) mg_mgr_poll(&mgr, 1000); 
   mg_mgr_free(&mgr);
   return 0;

@@ -1,4 +1,12 @@
+# Git Repos
 mongoose/
+
+# Output 
 bin/
+
+# Editor specific
 out.ogv
 .vscode/
+
+# cert files
+*.pem

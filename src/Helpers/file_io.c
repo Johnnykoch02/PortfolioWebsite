@@ -24,6 +24,35 @@ char* get_executable_path() {
     return path;
 }
 
+void load_certificates(struct server_certs * ss) {
+  const char* s_files[] = {"ca.pem", "cert.pem", "key.pem"};
+  const char* c_files[] = {"client_ca.pem", "client_cert.pem", "client_key.pem"};
+  get_certificates(&ss->s, s_files);
+  get_certificates(&ss->c, c_files);
+}
+
+void get_certificates(struct fileio_tls_certs* certs, const char** filenames) {
+  char** ctx_cert = (char**) malloc(3*sizeof(char*));
+  for (int i = 0; i < 3; i++) {
+      FILE* file = fopen(filenames[i], "rb");
+      if (file == NULL) {
+        fprintf(stderr, "Failed to open Cert file: %s\n", filenames[i]);
+        ctx_cert[i] = NULL;
+        continue;
+      }
+
+      fseek(file, 0, SEEK_END);
+      long length = ftell(file);
+      ctx_cert[i] = (char*) malloc(length+1);
+      fseek(file, 0, SEEK_SET);
+      fread(ctx_cert[i], 1, length, file);
+      ctx_cert[i][length] = '\0'; 
+      fclose(file);
+  }
+  certs->ca = ctx_cert[0]; certs->cert = ctx_cert[1]; certs->key = ctx_cert[2];
+  free(ctx_cert);
+}
+
 char* determine_mime_type(const char* f_name) {
   // Find the file extension (last occurrence of '.' in the filename)
   const char *ext = strrchr(f_name, '.');
@@ -49,11 +78,13 @@ void get_http_file_from_path(struct http_file_info* f_info, char* path ) {
     }
 }
 
-
 void get_http_file_from_uri(struct http_file_info* f_info, struct mg_http_message* msg) {
   strcat(f_info->path, ".");
   char *space_position = strchr(msg->uri.ptr, ' ');
   if (space_position != NULL) {
+    if ((space_position - msg->uri.ptr + 1) > 512) /* Avoid Buffer Overflow*/ {
+      f_info->f_ptr == NULL; f_info->file_size = -1; return;
+    }
     strncpy(f_info->path+1, msg->uri.ptr, space_position - msg->uri.ptr);
     f_info->path[space_position - msg->uri.ptr + 1] = '\0'; // Null-terminate the string
   }

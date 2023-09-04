@@ -2,7 +2,7 @@
 #include "src/Helpers/routing.h"
 #include "src/Helpers/file_io.h"
 
-static const char *s_url = "https://jonathanzkoch.dev:443";
+static const char *s_url = "https://0.0.0.0:443";
 static const char *s_http_addr = "http://0.0.0.0:80";    // HTTP port
 static const char *s_https_addr = "https://0.0.0.0:443";  // HTTPS port
 
@@ -123,11 +123,11 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
 
     struct mg_tls_opts opts = {
             // .server_ca = mg_str(s_tls_ca),
-            .server_cert = mg_str(c_tls_cert),
-            .server_key = mg_str(c_tls_key),
+            .server_cert = mg_str(s_tls_cert),
+            .server_key = mg_str(s_tls_key),
             // .client_ca = mg_str(c_tls_ca),
-            .client_cert = mg_str(s_tls_cert),
-            .client_key = mg_str(s_tls_key)
+            .client_cert = mg_str(c_tls_cert),
+            .client_key = mg_str(c_tls_key)
         };
     if (ev != MG_EV_POLL) mg_tls_ctx_init(nc->mgr, &opts);
     if (ev == MG_EV_ACCEPT) {

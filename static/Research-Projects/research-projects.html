@@ -50,6 +50,40 @@
             <ul class="projects">
                 <div class="horizontal-line"></div>
                 <li class="project-item">
+                    <h2>Numerai Competition Model (IEEE AI Group)</h2>
+                    <div class="project-content">
+                        <p>The IEEE AI group is tackling the Numerai Compeition with a state-of-the-art approach to data modeling. Our work attempts to combine the recent trend in large models with vast datasets to fit our models to the Numerai Competition Dataset. </p>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Numerai_logo.png">
+            
+                        <h4>Architecture:</h4>
+                        <ul>
+                            <li>Numerai Feature Data -></li>
+                            <li>N-Way Mixture Model -></li>
+                            <li>M-Parallel Residual Blocks -> </li>
+                            <li>Fully Connected Layers -></li>
+                            <li>5 Feature Classifier</li>
+                        </ul>
+                        <br>
+                        <h4>Currently Working On:</h4>
+                        <ul>
+                            <li>Augmenting our Data for training/testing improvements.</li>
+                            <li>Test our Training Methods using a F-1 Score Threshold and Accuracy for further exploration</li>
+                            <li>Experimenting with different Training Algorithms (other than Gradient Descent)</li>
+                        </ul>
+                        <br>
+                        <h4>Goal:</h4>
+                        <p>Develop a highly expressive model with a high enough accuracy (>90%) on our testing/competition data to enter into the Numerai Competition.</p><br>
+                        <br>
+                        <h4>GitHub:</h4>
+                        <ul>
+                            <li><a href="https://github.com/Fintanch/Numerai-Competition-Model" target="_blank">View Project Here</a></li>
+                        </ul>
+                        <br>
+                        </p>
+                    </div>
+                </li>
+                <div class="horizontal-line"></div>
+                <li class="project-item">
                     <h2>Gwen the Virtual Assistant</h2>
                     <div class="project-content">
                         <p>Welcome to the repository for Gwen, a female virtual assistant agent who is the link between your voice activated prompts and your preferred compute platform. Through Python, Gwen is provided a platform to control and manage your desktop environment in hopes to perform tasks that you might otherwise find remedial.</p>
@@ -135,10 +169,14 @@
                 </li>  
                 <div class="horizontal-line"></div> 
                 <li class="project-item">
-                    <h2>CoderSchoolAI: Teaching Agent AI to Kids</h2>
+                    <h2>CoderSchoolAI: Making Agent AI Simple(r)</h2>
                     <div class="project-content">
                         <p>
-                            A groundbreaking initiative to make theoretical CS concepts of Agent AI accessible to kids. This educational program, built on a Python Library, simplifies complex Agent AI concepts, introducing search-based and neural network-based methods for building AI agents.
+                            <br>shell> pip3 install CoderSchoolAI && python3 -c "import CoderSchoolAI"
+                            <br><br>
+                            An initiative to make theoretical CS concepts of Agent AI accessible to kids. This educational program, built on a Python Library, simplifies complex Agent AI concepts, introducing search-based and neural network-based methods for building AI agents.
+                            <br><br>
+                            A Reinforcement Learning Library which I utilize in my robotics research and many of my agent-based projects.
                             <br><br>
                             Guiding the creation of agents through classic and learning-based methods, CoderSchoolAI serves as a comprehensive, open-source library focused on reinforcement learning. It offers an array of tools to create, train, and test agents, including various neural network blocks, game environments, abstract classes for agents, reinforcement learning algorithms, and replay buffers.
                             <br><br>
@@ -149,6 +187,20 @@
                                 <li>Agent: Base class for different reinforcement learning agents.</li>
                                 <li>Training: Reinforcement learning algorithms and training facilitators.</li>
                                 <li>Buffer: Various types of replay buffers for experience replay.</li>
+                            </ul>
+                            <br>
+                            <h4>Current Features:</h4>
+                            <ul>
+                                <li>RL Markov Model Environment(timestep <i>t</i>) -> (State, Action, New State, Reward, Done)</li>
+                                <li>Deep Q Learning with built-in Neural Block Library Support/li>
+                                <li>Reinforcement Learning Utitities such as Replay Buffers and data tensor manipulation functions</li>
+                            </ul>
+                            <br>
+                            <h4>Currently Developing:</h4>
+                            <ul>
+                                <li>RL Algorithm Support for PPO, TRPO, DDPG & HER</li>
+                                <li>Further support for different Observation and Action Spaces including Gaussian (continuous)</li>
+                                <li>Make all built-in RL Algorithms utilizable via a simplified neural network API designed for learning</li>
                             </ul>
                             <br>
                             <a href="https://github.com/theCoderSchoolTampa/CoderSchoolAI" target="_blank"><b>GitHub: CoderSchoolAI</b></a>

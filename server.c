@@ -38,7 +38,7 @@ static void redirect_to_home(struct mg_connection *nc) {
 
 static void route_home(struct mg_connection *nc, int ev, void *ev_data, struct mg_http_message* msg) {
     if (mg_vcmp(&msg->method, "GET") == 0) {
-      char* route = malloc(512); route[0] = '\0';
+      char* route = malloc(1048); route[0] = '\0';
       strcat(route, "static/Home/index.html"); 
       serve_route(nc, ev, msg, route);
     }
@@ -47,7 +47,7 @@ static void route_home(struct mg_connection *nc, int ev, void *ev_data, struct m
 
 static void route_about(struct mg_connection *nc, int ev, void *ev_data, struct mg_http_message* msg) {
     if (mg_vcmp(&msg->method, "GET") == 0) {
-      char* route = malloc(512); route[0] = '\0';
+      char* route = malloc(1048); route[0] = '\0';
       strcat(route, "static/About/about-me.html"); 
       serve_route(nc, ev, msg, route);
     }
@@ -57,7 +57,7 @@ static void route_about(struct mg_connection *nc, int ev, void *ev_data, struct 
 
 static void route_projects(struct mg_connection *nc, int ev, void *ev_data, struct mg_http_message* msg) {
     if (mg_vcmp(&msg->method, "GET") == 0) {
-      char* route = malloc(512); route[0] = '\0';
+      char* route = malloc(1048); route[0] = '\0';
       strcat(route, "static/Research-Projects/research-projects.html"); 
       serve_route(nc, ev, msg, route);
     }
@@ -66,7 +66,7 @@ static void route_projects(struct mg_connection *nc, int ev, void *ev_data, stru
 
 static void route_resume(struct mg_connection *nc, int ev, void *ev_data, struct mg_http_message* msg) {
     if (mg_vcmp(&msg->method, "GET") == 0) {
-        char* path = malloc(512); 
+        char* path = malloc(1048); 
         char* path_base_address = path;
         strcpy(path, "static/data/content/personal/Jonathan_Koch_Resume.pdf");
         struct http_file_info f_info;
@@ -92,14 +92,14 @@ static void route_resume(struct mg_connection *nc, int ev, void *ev_data, struct
 
 static void route_static(struct mg_connection *nc, struct mg_http_message* msg) {
     if (mg_vcmp(&msg->method, "GET") == 0) {
-        char* path = malloc(512); 
+        char* path = malloc(1048); 
         path[0] = '\0';
         struct http_file_info f_info;
         f_info.path = path;
         get_http_file_from_uri(&f_info, msg);
         if (f_info.f_ptr != NULL) {
             mg_printf(nc, "HTTP/1.1 200 OK\r\nContent-Type: %s\r\nContent-Length: %ld\r\n\r\n", f_info.content_type, f_info.file_size);
-            char buffer[1024];
+            char buffer[512];
             size_t n;
             while ((n = fread(buffer, 1, sizeof(buffer), f_info.f_ptr )) > 0) {
                 mg_send(nc, buffer, n);
@@ -136,6 +136,7 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
     }
     else if (ev == MG_EV_HTTP_MSG) {
         printf("%s", msg->uri);
+        if (msg->uri.len > 512) redirect_to_home(nc); /* don't allow weird requests */
         if (mg_http_match_uri(msg, "/home") || mg_http_match_uri(msg, "/home/#")) {
             route_home(nc, ev, ev_data, msg);
         }

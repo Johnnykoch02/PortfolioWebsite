@@ -31,7 +31,7 @@
 </head>
 <body>
     <header>
-        <h1>Jonathan Koch, B.S. Computer Science</h1>
+        <h1>My Projects and Research</h1>
     </header>
     <nav>
         <a href="/home/">Home</a>
@@ -73,6 +73,28 @@
                 }
             </style>
             <ul class="projects">
+                <div class="horizontal-line"></div>
+                <li class="project-item">
+                    <h2>MicrogradPlus</h2>
+                    <div class="project-content">
+                        <p>An auto-differentiation computational graph library I extended from Andrej Karpathy's original <a href="https://github.com/karpathy/micrograd">Micrograd Project</a>. This extends the original scalar differentiation to support vector-ops in a similar style to that of PyTorch. For those who are interested in auto-differentiation with n-dimensional tensors, you can fork the source code down below. All modifications made to the original source code can be validated by the testing framework embedded into the project which utilizes PyTorch's auto-differentiation. </p>
+                        <img src="https://cdn-images-1.medium.com/max/2400/1*1mpE6fsq5LNxH31xeTWi5w.jpeg">
+                        <br>
+                        <h4>Future Exploration:</h4>
+                        <ul>
+                            <li>Introspecting optimization techniques</li>
+                            <li>Implementing a ShapeTracker; a mechanism to help determine gradients over tensors of changing sizes and dimensions. </li>
+                            <li>Incorporate kernel library for GPU support.</li>
+                        </ul>
+                        <br>
+                        <h4>GitHub:</h4>
+                        <ul>
+                            <li> <a href="https://github.com/johnnykoch02/MicrogradPlus">MicrogradPlus Source Code</a></li>
+                        </ul>
+                        <br>
+                        </p>
+                    </div>
+                </li>
                 <div class="horizontal-line"></div>
                 <li class="project-item">
                     <h2>Numerai Competition Model (IEEE AI Group)</h2>

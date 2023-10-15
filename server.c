@@ -2,6 +2,7 @@
 #include "src/Helpers/routing.h"
 #include "src/Helpers/file_io.h"
 
+#pragma once
 static const char *s_url = "https://0.0.0.0:443";
 static const char *s_http_addr = "http://0.0.0.0:80";    // HTTP port
 static const char *s_https_addr = "https://0.0.0.0:443";  // HTTPS port
@@ -20,6 +21,8 @@ char* client_ca_f = "client_ca.pem";
 char* client_cert_f = "client_cert.ca";
 char* client_key_f = "client_key.pem";
 
+char* root_directory;
+
 static void redirect_to_home(struct mg_connection *nc) {
   const char *html_redirect = "<!DOCTYPE html>"
                                         "<html lang=\"en\">"
@@ -28,7 +31,7 @@ static void redirect_to_home(struct mg_connection *nc) {
                                         "<script>"
                                         "setTimeout(function() {"
                                         "  window.location.href = '/home';"
-                                        "}, 5000);" // 5-second delay
+                                        "}, 500);" // 500-ms delay
                                         "</script>"
                                         "</body>"
                                         "</html>\r\n\r\n";
@@ -64,6 +67,15 @@ static void route_projects(struct mg_connection *nc, int ev, void *ev_data, stru
     mg_printf(nc, "\r\n\r\n");
 }
 
+static void route_videos(struct mg_connection *nc, int ev, void *ev_data, struct mg_http_message* msg) {
+    if (mg_vcmp(&msg->method, "GET") == 0) {
+      char* route = malloc(1048); route[0] = '\0';
+      strcat(route, "static/Videos-I-Like/videos-i-like.html"); 
+      serve_route(nc, ev, msg, route);
+    }
+    mg_printf(nc, "\r\n\r\n");
+}
+
 static void route_resume(struct mg_connection *nc, int ev, void *ev_data, struct mg_http_message* msg) {
     if (mg_vcmp(&msg->method, "GET") == 0) {
         char* path = malloc(1048); 
@@ -73,7 +85,7 @@ static void route_resume(struct mg_connection *nc, int ev, void *ev_data, struct
         get_http_file_from_path(&f_info,  path);
         if (f_info.f_ptr != NULL) {
             mg_printf(nc, "HTTP/1.1 200 OK\r\nContent-Type: %s\r\nContent-Length: %ld\r\nContent-Disposition: attachment; filename=\"Jonathan_Koch_Resume.pdf\"\r\n\r\n", f_info.content_type, f_info.file_size);
-            char buffer[1024];
+            char buffer[4096];
             size_t n;
             while ((n = fread(buffer, 1, sizeof(buffer), f_info.f_ptr )) > 0) {
                 mg_send(nc, buffer, n);
@@ -98,6 +110,7 @@ static void route_static(struct mg_connection *nc, struct mg_http_message* msg) 
         f_info.path = path;
         get_http_file_from_uri(&f_info, msg);
         if (f_info.f_ptr != NULL) {
+            // if (! is_subdir_of_root(f_info.path, root_directory)) return; /* No (or at least I hope) illegal path traverals */
             mg_printf(nc, "HTTP/1.1 200 OK\r\nContent-Type: %s\r\nContent-Length: %ld\r\n\r\n", f_info.content_type, f_info.file_size);
             char buffer[512];
             size_t n;
@@ -143,6 +156,9 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
         else if (mg_http_match_uri(msg, "/about") || mg_http_match_uri(msg, "/about/#")) {
             route_about(nc, ev, ev_data, msg);
         }
+        else if (mg_http_match_uri(msg, "/videos-i-like") || mg_http_match_uri(msg, "/videos-i-like/#")) {
+            route_videos(nc, ev, ev_data, msg);
+        }
         else if (mg_http_match_uri(msg, "/research-projects") || mg_http_match_uri(msg, "/research-projects/#")) {
             route_projects(nc, ev, ev_data, msg);
         }
@@ -157,10 +173,22 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
             redirect_to_home(nc);
         }
     }
+    if (ev == MG_EV_ACCEPT || ev == MG_EV_HTTP_MSG) {
+        FILE *logFile = fopen("/home/server.log", "a");
+        if (logFile != NULL) {
+            // Get IP address of client
+            uint8_t* ip_ptr = nc->rem.ip;
+            fprintf(logFile, "Received connection from: %d.%d.%d.%d\n", ip_ptr[0], ip_ptr[1], ip_ptr[2], ip_ptr[3]);
+            fclose(logFile);
+        } else {
+            perror("Could not open log file");
+        }
+    }
     (void) ev_data;
 }
 
 int main(int argc, char** args) {
+  root_directory = args[1];
   /* HTTPS Certificates*/
   struct server_certs certs;
   load_certificates(&certs);
@@ -171,7 +199,7 @@ int main(int argc, char** args) {
   mg_mgr_init(&mgr);  
 //   mg_http_listen(&mgr, s_http_addr, handle_routes, NULL);  // HTTP 
   mg_http_listen(&mgr, s_https_addr, handle_routes, (void *) 1);  // HTTPS 
-  for (;;) mg_mgr_poll(&mgr, 1000); 
+  for (;;) mg_mgr_poll(&mgr, 500); 
   mg_mgr_free(&mgr);
   return 0;
 }

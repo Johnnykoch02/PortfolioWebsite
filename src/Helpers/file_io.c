@@ -1,6 +1,5 @@
 #include "file_io.h"
 
-
 struct file_mime_mappings FILE_IO_mime_types[] = {
     {".html", "text/html"},
     {".css", "text/css"},
@@ -12,8 +11,24 @@ struct file_mime_mappings FILE_IO_mime_types[] = {
     // ...
 };
 
+int is_subdir_of_root(char* path, const char* root) {
+    struct stat s;
+    if (stat(path, &s) == -1) return 0; // Error return
+    if (!S_ISDIR(s.st_mode)) return 0;
+    /* Check if root found */
+    if (strcmp(path, root) == 0) {
+        return 1; 
+    }
+    char *parent = dirname(path);
+    if (parent == NULL) { /* Not child of Root Directory */
+        return 0;
+    }
+    /* Recursive Case */
+    return is_subdir_of_root(parent, root);
+}
+
 char* get_executable_path() {
-    char exe_path[512];
+    char exe_path[1048];
     ssize_t len = readlink("/proc/self/exe", exe_path, 512 - 1);
     if (len == -1) {
         return NULL;

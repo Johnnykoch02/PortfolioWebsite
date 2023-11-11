@@ -1,6 +1,7 @@
 #include "mongoose.h"
 #include "src/Helpers/routing.h"
 #include "src/Helpers/file_io.h"
+#include <pthread.h>
 
 #pragma once
 static const char *s_url = "https://0.0.0.0:443";
@@ -22,6 +23,17 @@ char* client_cert_f = "client_cert.ca";
 char* client_key_f = "client_key.pem";
 
 char* root_directory;
+
+struct static_thread_args {
+    struct mg_connection* nc;
+    struct mg_http_message* msg;
+};
+void* threaded_static_routing(void* args) {
+    struct static_thread_args* static_args = (struct static_thread_args*) args;
+    route_static(static_args->nc, static_args->msg);
+    free(static_args);
+    return NULL;
+}
 
 static void redirect_to_home(struct mg_connection *nc) {
   const char *html_redirect = "<!DOCTYPE html>"
@@ -167,7 +179,13 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
             route_resume(nc, ev, ev_data, msg);
         }
         else if (mg_http_match_uri(msg, "/static/#")) {
-            route_static(nc, msg);
+            struct static_thread_args * args = malloc(sizeof(struct static_thread_args));
+            if (!args) route_static(nc, msg); // Route normally
+            pthread_t tid;
+            args->msg = msg;
+            args->nc = nc;
+            pthread_create(&tid, NULL, threaded_static_routing, (void*) args);
+            pthread_detach(tid);
         }
         else {
             route_home(nc, ev, ev_data, msg);

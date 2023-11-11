@@ -170,7 +170,7 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
             route_static(nc, msg);
         }
         else {
-            redirect_to_home(nc);
+            route_home(nc, ev, ev_data, msg);
         }
     }
     if (ev == MG_EV_ACCEPT || ev == MG_EV_HTTP_MSG) {

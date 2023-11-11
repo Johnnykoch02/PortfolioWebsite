@@ -28,7 +28,10 @@ struct static_thread_args {
     struct mg_connection* nc;
     struct mg_http_message* msg;
 };
-void* threaded_static_routing(void* args) {
+
+static void route_static(struct mg_connection* nc, struct mg_http_message* msg);
+
+static void* threaded_static_routing(void* args) {
     struct static_thread_args* static_args = (struct static_thread_args*) args;
     route_static(static_args->nc, static_args->msg);
     free(static_args);

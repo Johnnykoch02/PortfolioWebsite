@@ -182,13 +182,14 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
             route_resume(nc, ev, ev_data, msg);
         }
         else if (mg_http_match_uri(msg, "/static/#")) {
-            struct static_thread_args * args = malloc(sizeof(struct static_thread_args));
-            if (!args) route_static(nc, msg); // Route normally
-            pthread_t tid;
-            args->msg = msg;
-            args->nc = nc;
-            pthread_create(&tid, NULL, threaded_static_routing, (void*) args);
-            pthread_detach(tid);
+            // struct static_thread_args * args = malloc(sizeof(struct static_thread_args));
+            // if (!args) 
+                route_static(nc, msg); // Route normally
+            // pthread_t tid;
+            // args->msg = msg;
+            // args->nc = nc;
+            // pthread_create(&tid, NULL, threaded_static_routing, (void*) args);
+            // pthread_detach(tid);
         }
         else {
             route_home(nc, ev, ev_data, msg);

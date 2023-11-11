@@ -1,0 +1,13 @@
+# Git Repos
+mongoose/
+
+# Output 
+bin/
+
+# Editor specific
+out.ogv
+.vscode/
+
+# cert files
+*.pem
+static/data/edu/nlp/sentiment/GoogleNews-vectors-negative300.bin

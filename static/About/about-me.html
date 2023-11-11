@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        nav {
+            background-color: #444;
+            text-align: center;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 10px;
+        }
+        main {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Curiosities and History</h1>
+    </header>
+    <nav>
+        <a href="/home/">Home</a>
+        <a href="/about/">About Me</a>
+        <a href="/research-projects/">Projects & Research</a>
+        <a href="/videos-i-like/">Videos I Like</a>
+        <a href="/my-resume/">Resume</a>
+    </nav>
+    <main>
+        <section id="about-me">
+            <p>
+                My name is Jonathan Koch and I am a fourth-year Computer Science Student at the University of South Florida. I do research in Robotics and Deep Learning focusing on reinforcement learning and its applications to different agent environments. I am passionate about the future of robotics and AI in terms of generative models devised to solve problems. Much of the work that has inspired me includes <a href="https://openai.com/research/emergent-tool-use"><b>Multi-Agent Emergent Tool Use</b></a> from OpenAI, <a href="https://www.annualreviews.org/doi/pdf/10.1146/annurev-neuro-092920-120559"><b>Human Representation Learning</b></a> from Dr. Angela Radulescu at Princeton, and <a href="https://arxiv.org/pdf/2304.03442.pdf"><b>Interactive Simulacra</b></a> from Stanford Lab. <br><br>My passions outside of Computer Science include classical music, playing the guitar, and brazilian ju-jistu. I also find inspiration in the nostolagic game of Minecraft, and much of my work in this field has stemmed from my interest in this game. Below, you will find a brief timeline of my professional developments.
+            </p>
+            <h2>Timeline</h2>
+            <style>
+                .timeline {
+                    list-style: none;
+                    position: relative;
+                }
+                .timeline::before {
+                    content: '';
+                    position: absolute;
+                    left: 0%;
+                    top: 0;
+                    bottom: 0;
+                    width: 2px;
+                    background-color: #ccc;
+                }
+                .timeline-item {
+                    margin: 20px;
+                    padding-left: 60px;
+                    position: relative;
+                }
+                .timeline-item::before {
+                    content: '';
+                    left: 50%;
+                    top: 20px;
+                    width: 10px;
+                    height: 10px;
+                    margin-left: -5px;
+                    background-color: #ccc;
+                    border-radius: 50%;
+                }
+                .timeline-content {
+                    margin: 10px 0;
+                }
+                .timeline-content img {
+                    max-width: 100%;
+                    height: auto;
+                }
+            </style>
+            <ul class="timeline">
+                <li class="timeline-item">
+                    <h3>August 10th, 2023: Started as UGTA</h3>
+                    <div class="timeline-content">
+                        <p>Selected to lead discussion sessions for Data Structures and Program Design in C.</p>
+                        <img src="image1.jpg" alt="">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>July 25th: Founded USF IEEE's AI Group</h3>
+                    <div class="timeline-content">
+                        <p>The purpose of this group is to promote the discussion and development of AI on college campuses through the IEEE Student Chapters. Our mission is to enable students to learn and develop with AI technologies and provide an environment where AI project development can occur. Also, the group will participate in one main project a year where students can collaborate on different aspects of software, hardware and engineering. We extended this collaboration to other universities such as ... via open-source software and extension of GPU access.</p>
+                        <img src="https://www.usf.edu/engineering/cse/images/aix-banner-wide.jpg" width="320" height="280" alt="Img">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>Summer, 2023: Taught CoderSchoolAI Summer Camp</h3>
+                    <div class="timeline-content">
+                        <p>Educated younger audience in the core concepts involving artificial intelligence. Ran a curriculum based in Python and a custom software library developed by myself.<br><br><b>Topics include:</b> <i>Python, Search, Agents, Game logic principles, supervised learning, reinforcement learning</i></p>
+                        <img src="https://github.com/theCoderSchoolTampa/CoderSchoolAI/blob/master/CoderSchoolAI/Assets/CoderSchoolAI/CoderSchoolAI-Logo.png?raw=true" width="220" height="260" alt="Img">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>April 28th - April 31st, 2023: Competed in VEX Worlds Competition in Dallas, Texas.</h3>
+                    <div class="timeline-content">
+                        <p>Travelled and represented USF at the largest VEXU competition in the world. <br><br><b>Team:</b> <i>Terri-BULL Robotics</i></p>
+                        <img src="/static/data/site_imgs/About/smallbot_wired_up.jpg" width="320" height="280" alt="Img">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>Febuary 11th - Feburary 12, 2023: Hosted IEEE's Lab Tour at USF's Engineering Expo</h3>
+                    <div class="timeline-content">
+                        <p>Planned and oversaw Lab Tour, set up Robot Soccer Competition for the lab visitors.</p>
+                        <img src="/static/data/site_imgs/About/mentorship_expo.jpg" width="360" height="320" alt="Img">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>May 2022: Started as Junior Software Developer at CAE USA in Tampa, FL</h3>
+                    <div class="timeline-content">
+                        <p></p>
+                        <img src="https://www.cae.com/images/made/media/images/CAE_USA_new_facility_rendering_Sept2019_4000_2408_65.jpg" width="220" height="160" alt="Img">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>November, 2021: Started as a Programming Instructor at theCoderSchool Tampa</h3>
+                    <div class="timeline-content">
+                        <p></p>
+                        <img src="https://us1-photo.nextdoor.com/business_gallery/89/ff/89ff4a3317db2ff2f385ff8558487133.JPG" width="160" height="160" alt="Img">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>October 2021: Started as a Research Scientist at RPAL(Robot Perception and Action Lab)</h3>
+                    <div class="timeline-content">
+                        <p></p>
+                        <img src="https://rpal.cse.usf.edu/images/dubi2.png" width="260" height="220" alt="Img">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>August 2021: Transferred to University of South Florida for Computer Science</h3>
+                    <div class="timeline-content">
+                        <p></p>
+                        <img src="https://dz0zjhi21dz2t.cloudfront.net/media/139164/photos/1019042/2048.jpg" width="260" height="220" alt="Img">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>October, 2020: Joined UAlbany USF Student Chapter</h3>
+                    <div class="timeline-content">
+                        <p>Participated in workshops, Coding Interview practice, and shared side project development. Introduced to sophisticated robotics systems.</p>
+                        <img src="https://media.licdn.com/dms/image/D4E10AQGgqDol10nBSA/image-shrink_1280/0/1682092443454?e=1692424800&v=beta&t=zoPdxivb4WwevqbVGxLW2dxGhzLFRvqFtI-MVCczoeE" width="240" height="220" alt="Img">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>August, 2020: Started Degree at SUNY Albany, Bachelors of Science Computer Science</h3>
+                    <div class="timeline-content">
+                        <p></p>
+                        <img src="https://www.commonapp.org/static/86bf40b429adae08eb095d1ea755bfec/suny-university-albany_311.jpg" width="420" height="260" alt="Img">
+                    </div>
+                </li>
+                <li class="timeline-item">
+                    <h3>Spring, 2015: Released alpha of Custom Minecraft Prison Server</h3>
+                    <div class="timeline-content">
+                        <p><b>Server featured:</b><i> Item shop, factions, custom skills, purchasable farms and resource mines, permissions system.</i></p>
+                        <img src="https://staticg.sportskeeda.com/editor/2022/04/28c64-16503228784109-1920.jpg" width="280" height="245" alt="Img">
+                    </div>
+                </li>
+                <!-- Additional timeline items go here -->
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>Copyright &copy; 2023</p>
+    </footer>
+</body>
+</html>

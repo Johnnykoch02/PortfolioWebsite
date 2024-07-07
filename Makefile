@@ -8,8 +8,6 @@ CFLAGS = -g -O0 -I. -W -Wall -Wextra -O2 -fsanitize=address,undefined -DMG_ENABL
 # LDFLAGS = -DMG_ENABLE_MBEDTLS=1 -lsqlite3 -lmbedtls -lmbedcrypto -lmbedx509 -pthread -fsanitize=address,undefined
 LDFLAGS = -DMG_ENABLE_OPENSSL=1 -lsqlite3 -lssl -lcrypto -pthread -fsanitize=address,undefined
 
-
-
 # Source Files (Auto discover all C files in src directory)
 SRCS = ./server.c ./mongoose.c
 SRCS += $(shell find src -name '*.c')

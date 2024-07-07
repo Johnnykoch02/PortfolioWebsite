@@ -30,10 +30,11 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>My Projects and Research</h1>
+    <header style="display: flex; align-items: center;">
+        <img src="/static/data/site_imgs/Home/me.jpg" height="60" style="padding: 5px"/>        
+        <h1 style="margin-left: 10px;">My Projects and Research</h1>
     </header>
-    <nav>
+    <nav style="display: flex; align-items: center;">
         <a href="/home/">Home</a>
         <a href="/about/">About Me</a>
         <a href="/research-projects/">Projects & Research</a>
@@ -75,17 +76,130 @@
             <ul class="projects">
                 <div class="horizontal-line"></div>
                 <li class="project-item">
+                    <h2>RPAL Research: Advanced Object Manipulation using Berret Hand</h2>
+                    <div class="project-content">
+                        <p>
+                            This research, conducted at the Robot Perception and Action Laboratory (RPAL) at the University of South Florida, focuses on enhancing robotic object manipulation through advanced machine learning techniques. Our goal is to achieve precise control in tasks such as controlled object dropping using the Berret Hand robot.
+                        </p>
+                        
+                        <h3>Berret Hand Representation Learning: A Multi-Objective Approach</h3>
+                        
+                        <div class="model-section">
+                            <h4>1. Encoder: The Foundation of State Representation</h4>
+                            <img src="/static/data/site_imgs/Research-Projects/encoder.png" alt="Berret Hand Encoder Architecture">
+                            <p>
+                                Our encoder is the cornerstone of our architecture, designed to create rich, informative state embeddings:
+                                <ul>
+                                    <li>Processes diverse sensor inputs: tactile data, images, torque measurements, and joint angles</li>
+                                    <li>Employs a transformer-based architecture for capturing complex spatial and temporal relationships</li>
+                                    <li>Trained with multiple objectives to ensure comprehensive state representation:
+                                        <ul>
+                                            <li>Temporal encoding: Captures time-dependent features across sensor readings</li>
+                                            <li>Spatial encoding: Preserves relative positions and orientations of objects and hand components</li>
+                                            <li>Value encoding: Incorporates task-relevant information for decision making</li>
+                                            <li>State reconstruction: Ensures the embedding retains all essential information of the original state</li>
+                                        </ul>
+                                    </li>
+                                    <li>Aims to create a linear learned representation, facilitating efficient state transitions and predictions</li>
+                                </ul>
+                            </p>
+                        </div>
+                
+                        <div class="model-section">
+                            <h4>2. Dynamix Model: Forward Dynamics Prediction</h4>
+                            <img src="/static/data/site_imgs/Research-Projects/dynamix.png" alt="Dynamix Model Architecture">
+                            <p>
+                                The Dynamix model leverages the encoder to predict future states:
+                                <ul>
+                                    <li>Inputs: Current state embedding and action</li>
+                                    <li>Output: Predicted next state embedding</li>
+                                    <li>Key components:
+                                        <ul>
+                                            <li>Delta Network: Learns state transitions in the embedding space</li>
+                                            <li>Predictor: Generates the next state embedding</li>
+                                        </ul>
+                                    </li>
+                                    <li>Enables multi-step trajectory prediction in the embedding space</li>
+                                </ul>
+                            </p>
+                        </div>
+                
+                        <div class="model-section">
+                            <h4>3. Critiq Model: Inverse Dynamics and Reward Prediction</h4>
+                            <img src="/static/data/site_imgs/Research-Projects/critiq.png" alt="Critiq Model Architecture">
+                            <p>
+                                The Critiq model complements Dynamix by focusing on inverse dynamics:
+                                <ul>
+                                    <li>Inputs: Current and next state embeddings</li>
+                                    <li>Outputs: Predicted action and reward</li>
+                                    <li>Key components:
+                                        <ul>
+                                            <li>Predictor network: Estimates actions and rewards from state transitions</li>
+                                            <li>Time estimator: Provides temporal context for predictions</li>
+                                        </ul>
+                                    </li>
+                                    <li>Facilitates learning of action-consequence relationships and reward structures</li>
+                                </ul>
+                            </p>
+                        </div>
+                
+                        <div class="model-section">
+                            <h4>4. Multi-Task Learning Reflection</h4>
+                            <p>
+                                Our approach uniquely combines forward and inverse dynamics learning:
+                                <ul>
+                                    <li>Shared encoder ensures consistent state representation across models</li>
+                                    <li>Complementary learning objectives enhance the robustness of the state embeddings</li>
+                                    <li>The architecture allows for:
+                                        <ul>
+                                            <li>Efficient handling of complex relationships in a compact embedding space</li>
+                                            <li>Flexible temporal reasoning and multi-step prediction capabilities</li>
+                                            <li>Rich information extraction supporting diverse manipulation tasks</li>
+                                        </ul>
+                                    </li>
+                                    <li>This unified approach aims to create a versatile foundation for advanced robotic manipulation tasks</li>
+                                </ul>
+                            </p>
+                        </div>
+                
+                        <div class="results-section">
+                            <h4>5. Results and Performance Metrics</h4>
+                            <p>
+                                We are currently in the process of gathering comprehensive results. Future updates will include:
+                            </p>
+                            <ul>
+                                <li>Prediction accuracy comparisons between our models and baselines</li>
+                                <li>Training and validation loss curves demonstrating learning progress</li>
+                                <li>Task completion rates for various object manipulation scenarios</li>
+                                <li>Ablation studies highlighting the impact of different architectural choices</li>
+                            </ul>
+                            <div class="graph-container">
+                                <!-- Placeholder for future graphs -->
+                                <p>Detailed performance graphs and metrics will be added here as results become available.</p>
+                            </div>
+                        </div>
+                
+                        <p>
+                            <a href="https://rpal.cse.usf.edu" target="_blank"><b>Visit RPAL Website</b></a>
+                            <img src="https://rpal.cse.usf.edu/images/logo.png" alt="USF RPAL Logo">
+                        </p>
+                    </div>
+                </li>
+                <div class="horizontal-line"></div>
+                <li class="project-item">
                     <h2>Teach-a-Bull (IEEE AI Group)</h2>
                     <div class="project-content">
-                        <p>What if high quality education was made available to students around the world regardless of socioeconomic status; as long as they had access to the internet? Many students who have access to an internet connection are unable to afford high quality and personalized education, and because of this they may miss out on opportunities to access higher education. Likewise, many tools that exist today to combat this problem are not interactive and personalized. We present "Teach-a-Bull", an extension of the research project <i>Large Language Models as Actors in Text-Based Environments (<a href="https://github.com/USF-IEEE/AITutor-Backend/blob/main/ResearchDocumentation.md">LLMaAiT-BE</a>).</i>Teach-a-Bull offers extensive personalization for in-depth teaching and testing on material which you have ultimate control over. Teach-a-Bull offers elaborate feedback to a user as to where they are strong and also where there may be gaps in knowledge so they can better practice. In all, Teach-a-Bull is an extensive and personalized Expert AI Tutor, developed to behave and operate like the real thing. We propose a non-profit AI Tool to tackle the problem of education, and look to gain funding for large-scale deployment.</p>
+                        <p>What if high quality education was made available to students around the world regardless of socioeconomic status; as long as they had access to the internet? Many students who have access to an internet connection are unable to afford high quality and personalized education, and because of this they may miss out on opportunities to access higher education. Likewise, many tools that exist today to combat this problem are not interactive and personalized. We present "Teach-a-Bull", an extension of the research project <i>Large Language Models as Actors in Text-Based Environments (<a href="https://github.com/USF-IEEE/AITutor-Backend/blob/main/ResearchDocumentation.md">LLMaAiT-BE</a>).</i>Teach-a-Bull formalized graph-based generations over long-form text documents. For example, LLMaAiT-BE can be used formally for the generation of books, lectures, projects, papers, reports, playwrites, and more. This work enphisizes the narrow tasking and deconstruction of formal tasks into sub-components, and iteration on improval. </p>
+                        <p>This work also attempted to construct vairous value metrics for assessing the quality of long-form generation documents, including the distrobution recreation hypothesis. This metric can be summarized by considering the content item which you are trying to generate, and creating a region of a vector space for which this item needs to contained in. For example, consider N documents for a lecture on 19th century Americas constructed by various experts in the field. If semantically, the generated document is contained within the span of all of these documents semantically, than we can consider this generation as a success. In other words, we are checking to see if our document has been sampled from the same distrobution as the expert-generated documents.</p>
+
                         <img src="https://epe.brightspotcdn.com/95/7c/8ecbf5e24d32a9e01f4c37d2e16d/ai-teacher-042023-1286808956-01.jpg">
                         <br>
                         <h4>Research Project:</h4>
                         <ul>
-                            <li>This project extends work in LLMaAiTB-E</li>
+                            <li>This project extends work in LLMaAiTB-E: Graph-based generation of long-form text-based content. </li>
                             <li>ILLMaAiTB-E: Formalizes and proposes a method to implement LLMs in complex state-based environments in which the model interacts with.</li>
                             <li>Research project hypothesizes that LLMs can solve more complex problems by implementing a MDP</li>
-                            <li>Goal of ILLMaAiTB-E: propose new methods for using LLMs to solve complex problems. Emphasis of data structure generation, argue that our method produces better generation quality via MDP modeling vs. one-shot prompting.</li>
+                            <li>Goal of LLMaAiTB-E: propose new methods for using LLMs to solve complex problems. Emphasis of data structure generation, argue that our method produces better generation quality via MDP modeling vs. one-shot prompting.</li>
                             <li>Proposed a new metric in value estimating generation quality.</li>
                         </ul>
                         <br>
@@ -190,21 +304,8 @@
                         </ul>
                         <br>
                         </p>
-                        <!-- You can add an image here if you have one related to the project -->
                         <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/Cu2ECSlPcfw/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/Cu2ECSlPcfw/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/Cu2ECSlPcfw/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by @jonathanzkoch</a></p></div></blockquote>
 <script async src="//www.instagram.com/embed.js"></script>
-                    </div>
-                </li>
-                <div class="horizontal-line"></div>
-                <li class="project-item">
-                    <h2>RPAL Research in Object Manipulation and Multi-Object Grasping</h2>
-                    <div class="project-content">
-                        <p>
-                            Conducted at the Robot Perception and Action Laboratory at the University of South Florida, this research focuses on robotic object manipulation using supervised and reinforcement learning techniques. The project involves constructing and pretraining a transformer network for encoding spatial information and exploring methods to enhance policy accuracy. The goal is to accomplish controlled dropping of objects from a Berret Hand robot, utilizing various sensor data like tactile sensing, images, torque measurements, and joint angles. The target is to facilitate controlled dropping in different hand configurations.
-                            <br><br>
-                            <a href="https://rpal.cse.usf.edu" target="_blank"><b>Visit RPAL</b></a>
-                            <img src="https://rpal.cse.usf.edu/images/logo.png" alt="USF RPAL">
-                        </p>
                     </div>
                 </li>
                 <div class="horizontal-line"></div>

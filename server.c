@@ -4,6 +4,10 @@
 #include "src/Helpers/cache.h"
 #include <pthread.h>
 #include <string.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <sys/types.h> // For DT_REG
+#include <time.h>
 
 #pragma once
 static const char *s_url = "https://0.0.0.0:443";
@@ -51,6 +55,202 @@ size_t num_api_endpoints;
 StringKeyValue** API_ENDPOINTS;
 LRUCache* cache;
 
+// Structure for blog post data
+typedef struct blog_post {
+    char* filename;
+    char* content;
+    time_t creation_date;
+    size_t content_size;
+} BlogPost;
+
+// Global array of blog posts
+BlogPost** blog_posts = NULL;
+int blog_post_count = 0;
+
+// Function to load all blog posts from the static/blog_posts directory
+void load_blog_posts() {
+    DIR *dir;
+    struct dirent *entry;
+    struct stat file_stats;
+    char path[1024];
+    
+    // Free existing posts if they exist
+    if (blog_posts != NULL) {
+        for (int i = 0; i < blog_post_count; i++) {
+            if (blog_posts[i]->filename != NULL) free(blog_posts[i]->filename);
+            if (blog_posts[i]->content != NULL) free(blog_posts[i]->content);
+            free(blog_posts[i]);
+        }
+        free(blog_posts);
+        blog_posts = NULL;
+        blog_post_count = 0;
+    }
+    
+    // Open the blog posts directory
+    dir = opendir("static/blog_posts");
+    if (dir == NULL) {
+        printf("Error: Could not open blog posts directory\n");
+        return;
+    }
+    
+    // First, count the number of files
+    while ((entry = readdir(dir)) != NULL) {
+        char full_path[1024];
+        sprintf(full_path, "static/blog_posts/%s", entry->d_name);
+        
+        struct stat st;
+        if (stat(full_path, &st) == 0 && S_ISREG(st.st_mode) && strstr(entry->d_name, ".md") != NULL) {
+            blog_post_count++;
+        }
+    }
+    
+    // Allocate memory for blog posts array
+    blog_posts = (BlogPost**)malloc(sizeof(BlogPost*) * blog_post_count);
+    
+    // Reset directory pointer
+    rewinddir(dir);
+    
+    // Load each blog post
+    int index = 0;
+    while ((entry = readdir(dir)) != NULL) {
+        char full_path[1024];
+        sprintf(full_path, "static/blog_posts/%s", entry->d_name);
+        
+        struct stat st;
+        if (stat(full_path, &st) == 0 && S_ISREG(st.st_mode) && strstr(entry->d_name, ".md") != NULL) {
+            // Get file stats for creation date
+            if (stat(full_path, &file_stats) != 0) {
+                continue;
+            }
+            
+            // Create a new blog post
+            BlogPost* post = (BlogPost*)malloc(sizeof(BlogPost));
+            post->filename = strdup(entry->d_name);
+            post->creation_date = file_stats.st_ctime;
+            
+            // Read file content
+            FILE *file = fopen(full_path, "rb");
+            if (file == NULL) {
+                free(post->filename);
+                free(post);
+                continue;
+            }
+            
+            // Get file size
+            fseek(file, 0, SEEK_END);
+            size_t file_size = ftell(file);
+            fseek(file, 0, SEEK_SET);
+            
+            // Read content
+            post->content = (char*)malloc(file_size + 1);
+            fread(post->content, 1, file_size, file);
+            post->content[file_size] = '\0';
+            post->content_size = file_size;
+            
+            fclose(file);
+            
+            blog_posts[index++] = post;
+        }
+    }
+    
+    closedir(dir);
+    printf("Loaded %d blog posts\n", blog_post_count);
+}
+
+// Route handler for individual blog posts
+static void route_blog_post(struct mg_connection *nc, struct mg_http_message* msg) {
+    if (mg_vcmp(&msg->method, "GET") == 0) {
+        // Extract the filename from the URI
+        char filename[256] = {0};
+        if (sscanf((const char*)msg->uri.ptr, "/blog_post/%255s", filename) != 1) {
+            serve_pnf(nc, 0, msg);
+            return;
+        }
+        
+        // Look for the post in our array
+        for (int i = 0; i < blog_post_count; i++) {
+            if (strcmp(blog_posts[i]->filename, filename) == 0) {
+                // Send the markdown content
+                mg_printf(nc, "HTTP/1.1 200 OK\r\nContent-Type: text/markdown\r\nContent-Length: %ld\r\n\r\n", 
+                          blog_posts[i]->content_size);
+                mg_send(nc, blog_posts[i]->content, blog_posts[i]->content_size);
+                return;
+            }
+        }
+        
+        // Post not found
+        serve_pnf(nc, 0, msg);
+    }
+}
+
+// Route handler for getting all blog posts as JSON
+static void route_blog_posts(struct mg_connection *nc, struct mg_http_message* msg) {
+    if (mg_vcmp(&msg->method, "GET") == 0) {
+        // Build JSON response
+        char* json = malloc(10240); // Allocate a reasonably large buffer
+        strcpy(json, "[");
+        
+        for (int i = 0; i < blog_post_count; i++) {
+            char post_json[4096];
+            char date_str[64];
+            struct tm *tm_info = localtime(&blog_posts[i]->creation_date);
+            strftime(date_str, sizeof(date_str), "%Y-%m-%dT%H:%M:%S", tm_info);
+            
+            sprintf(post_json, 
+                    "%s{\"filename\":\"%s\",\"date\":\"%s\",\"content\":", 
+                    (i > 0 ? "," : ""), 
+                    blog_posts[i]->filename, 
+                    date_str);
+            
+            strcat(json, post_json);
+            
+            // Add content as JSON string (need to escape special chars)
+            strcat(json, "\"");
+            
+            // Simple escaping of quotes and backslashes in content
+            char* escaped_content = malloc(blog_posts[i]->content_size * 2);
+            char* p = escaped_content;
+            for (size_t j = 0; j < blog_posts[i]->content_size; j++) {
+                char c = blog_posts[i]->content[j];
+                if (c == '\"' || c == '\\') {
+                    *p++ = '\\';
+                }
+                if (c == '\n') {
+                    *p++ = '\\';
+                    *p++ = 'n';
+                } else if (c == '\r') {
+                    *p++ = '\\';
+                    *p++ = 'r';
+                } else {
+                    *p++ = c;
+                }
+            }
+            *p = '\0';
+            
+            strcat(json, escaped_content);
+            strcat(json, "\"}");
+            free(escaped_content);
+        }
+        
+        strcat(json, "]");
+        
+        // Send JSON response
+        mg_printf(nc, "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: %ld\r\n\r\n", 
+                  strlen(json));
+        mg_send(nc, json, strlen(json));
+        
+        free(json);
+    }
+}
+
+static void route_blog(struct mg_connection *nc, int ev, void *ev_data, struct mg_http_message* msg) {
+    if (mg_vcmp(&msg->method, "GET") == 0) {
+      char* route = malloc(1048); route[0] = '\0';
+      strcat(route, "static/Blog/index.html"); 
+      serve_route(nc, ev, msg, route);
+    }
+    mg_printf(nc, "\r\n\r\n");
+}
 
 static void route_static(struct mg_connection* nc, struct mg_http_message* msg);
 
@@ -198,7 +398,6 @@ static void route_apis(struct mg_connection *nc, struct mg_http_message* msg) {
     // mg_printf(nc, "\r\n\r\n");
 } 
 
-
 static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void* fn_data) {
     /**ROUTING*/
     struct mg_http_message *msg = (struct mg_http_message *) ev_data;
@@ -232,19 +431,20 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
         else if (mg_http_match_uri(msg, "/research-projects") || mg_http_match_uri(msg, "/research-projects/#")) {
             route_projects(nc, ev, ev_data, msg);
         }
-        
+        else if (mg_http_match_uri(msg, "/blog") || mg_http_match_uri(msg, "/blog/#")) {
+            route_blog(nc, ev, ev_data, msg);
+        }
+        else if (mg_http_match_uri(msg, "/blog_posts")) {
+            route_blog_posts(nc, msg);
+        }
+        else if (mg_http_match_uri(msg, "/blog_post/*")) {
+            route_blog_post(nc, msg);
+        }
         else if (mg_http_match_uri(msg, "/my-resume") || mg_http_match_uri(msg, "/my-resume/")) {
             route_resume(nc, ev, ev_data, msg);
         }
         else if (mg_http_match_uri(msg, "/static/#")) {
-            // struct static_thread_args * args = malloc(sizeof(struct static_thread_args));
-            // if (!args) 
-                route_static(nc, msg); // Route normally
-            // pthread_t tid;
-            // args->msg = msg;
-            // args->nc = nc;
-            // pthread_create(&tid, NULL, threaded_static_routing, (void*) args);
-            // pthread_detach(tid);
+            route_static(nc, msg); // Route normally
         }
         else {
             route_home(nc, ev, ev_data, msg);
@@ -278,6 +478,9 @@ int main(int argc, char** args) {
     API_ENDPOINTS = (StringKeyValue**) malloc(sizeof(StringKeyValue*) * num_api_endpoints);
 
     cache = init_cache();
+
+    // Load blog posts
+    load_blog_posts();
 
     struct mg_mgr mgr;
     mg_log_set(MG_LL_DEBUG);

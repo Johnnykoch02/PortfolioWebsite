@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Jonathan Koch</title>
+    <!-- Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Syntax highlighting for code blocks -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+    <script>hljs.highlightAll();</script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .blog-intro {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .blog-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .blog-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 300px;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .blog-card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+        }
+
+        .blog-card-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-card-excerpt {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .blog-card-readmore {
+            color: var(--secondary-color);
+            text-align: right;
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        /* Markdown content styling */
+        .markdown-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .markdown-content h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .markdown-content h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .markdown-content h3, .markdown-content h4 {
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .markdown-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .markdown-content pre {
+            background: #f4f6f8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .markdown-content code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 1rem;
+            margin-left: 0;
+            color: #666;
+        }
+
+        .markdown-content ul, .markdown-content ol {
+            padding-left: 2rem;
+        }
+
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--primary-color);
+            color: white;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem;
+            }
+
+            .blog-cards {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+
+            .modal-content {
+                width: 95%;
+                height: 95vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Jonathan Koch's Blog</h1>
+        <p>Thoughts on AI, Robotics, and Machine Learning</p>
+    </header>
+    <nav>
+        <a href="/home/">Home</a>
+        <a href="/about/">About Me</a>
+        <a href="/research-projects/">Projects & Research</a>
+        <a href="/videos-i-like/">Videos I Like</a>
+        <a href="/my-resume/">Resume</a>
+        <a href="/blog/">Blog</a>
+    </nav>
+    <main>
+        <section class="blog-intro">
+            <h2>Welcome to My Blog</h2>
+            <p>Here I share my thoughts, experiences, and insights on artificial intelligence, machine learning, robotics, and entrepreneurship. I write about both technical topics and personal reflections on my journey in these fields.</p>
+        </section>
+
+        <div class="blog-cards" id="blogCards">
+            <div class="loading">Loading posts...</div>
+        </div>
+    </main>
+
+    <!-- Modal for blog post -->
+    <div class="modal-overlay" id="blogModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Blog Post Title</h2>
+                <button class="modal-close" id="modalClose">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="markdown-content" id="modalContent">
+                    <!-- Markdown content will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Copyright &copy; 2024 Jonathan Koch</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elements
+            const blogCards = document.getElementById('blogCards');
+            const modal = document.getElementById('blogModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const modalClose = document.getElementById('modalClose');
+
+            // Configure marked.js
+            marked.setOptions({
+                highlight: function(code, language) {
+                    const validLanguage = hljs.getLanguage(language) ? language : 'plaintext';
+                    return hljs.highlight(validLanguage, code).value;
+                },
+                langPrefix: 'hljs language-',
+                breaks: true,
+                gfm: true
+            });
+
+            // Fetch blog posts
+            fetch('/blog_posts')
+                .then(response => response.json())
+                .then(posts => {
+                    // Clear loading message
+                    blogCards.innerHTML = '';
+                    
+                    // Sort posts by date (newest first)
+                    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    
+                    // Render each post as a card
+                    posts.forEach(post => {
+                        const card = createBlogCard(post);
+                        blogCards.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching blog posts:', error);
+                    blogCards.innerHTML = '<div class="loading">Failed to load posts. Please try again later.</div>';
+                });
+
+            // Create a blog card element
+            function createBlogCard(post) {
+                const card = document.createElement('div');
+                card.className = 'blog-card';
+                
+                // Extract first paragraph for excerpt
+                const content = post.content;
+                const titleEnd = content.indexOf('\n');
+                const title = content.substring(2, titleEnd).trim(); // Remove '# ' from title
+                
+                const excerptStart = content.indexOf('\n\n') + 2;
+                const excerptEnd = content.indexOf('\n\n', excerptStart);
+                let excerpt = content.substring(excerptStart, excerptEnd > 0 ? excerptEnd : undefined).trim();
+                
+                // Remove markdown formatting from excerpt
+                excerpt = excerpt.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1');
+                
+                // Format date
+                const postDate = new Date(post.date);
+                const formattedDate = postDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                card.innerHTML = `
+                    <div class="blog-card-content">
+                        <h3>${title}</h3>
+                        <div class="blog-card-date">${formattedDate}</div>
+                        <div class="blog-card-excerpt">${excerpt}</div>
+                        <div class="blog-card-readmore">Read more →</div>
+                    </div>
+                `;
+                
+                // Add click event to open modal
+                card.addEventListener('click', () => {
+                    openBlogModal(post);
+                });
+                
+                return card;
+            }
+
+            // Open modal with blog post
+            function openBlogModal(post) {
+                // Extract title from markdown content
+                const content = post.content;
+                const titleEnd = content.indexOf('\n');
+                const title = content.substring(2, titleEnd).trim(); // Remove '# ' from title
+                
+                // Set modal content
+                modalTitle.textContent = title;
+                modalContent.innerHTML = marked.parse(content);
+                
+                // Apply syntax highlighting to code blocks
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+                
+                // Show modal
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+            }
+
+            // Close modal
+            modalClose.addEventListener('click', () => {
+                modal.classList.remove('active');
+                document.body.style.overflow = ''; // Re-enable scrolling
+            });
+
+            // Close modal when clicking outside content
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Close modal on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Add scroll-based nav styling
+            window.addEventListener('scroll', () => {
+                const nav = document.querySelector('nav');
+                if (window.scrollY > 100) {
+                    nav.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                    nav.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                } else {
+                    nav.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+                    nav.style.boxShadow = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -3,441 +3,669 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research Projects</title>
+    <title>Research Projects - Jonathan Koch</title>
     <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
         }
+
         header {
-            background-color: #333;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            text-align: center;
-            padding: 20px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        header img {
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
         nav {
-            background-color: #444;
-            text-align: center;
-            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            transition: all 0.3s ease;
         }
+
         nav a {
-            color: white;
+            color: var(--primary-color);
             text-decoration: none;
-            margin: 10px;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
+
+        nav a:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
         main {
-            padding: 20px;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .intro-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .projects {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            gap: 2rem;
+        }
+
+        .project-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-item h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-content img,
+        .project-content video {
+            width: 100%;
+            border-radius: 8px;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .model-section {
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .model-section h4 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+
+        .horizontal-line {
+            height: 2px;
+            background: linear-gradient(to right, var(--secondary-color), transparent);
+            margin: 2rem 0;
+            border-radius: 1px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .tech-tag {
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--primary-color);
+            color: white;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+
+            .project-content {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <header style="display: flex; align-items: center;">
-        <img src="/static/data/site_imgs/Home/me.jpg" height="60" style="padding: 5px"/>        
-        <h1 style="margin-left: 10px;">My Projects and Research</h1>
+    <header>
+        <img src="/static/data/site_imgs/Home/me.jpg" height="60" alt="Jonathan Koch"/>
+        <h1>My Projects and Research</h1>
     </header>
-    <nav style="display: flex; align-items: center;">
+    <nav>
         <a href="/home/">Home</a>
         <a href="/about/">About Me</a>
         <a href="/research-projects/">Projects & Research</a>
         <a href="/videos-i-like/">Videos I Like</a>
         <a href="/my-resume/">Resume</a>
+        <a href="/blog/">Blog</a>
     </nav>
     <main>
-        <section id="research-projects">
+        <section class="intro-section">
             <h2>Research Projects</h2>
-            <p>
-                Here you can find some more background information on all of the projects I have worked on. All of these projects I have referenced are not associated with any coursework or class projects from any University. For more references and a better look at some of the smaller projects I worked on, visit my <a href="https://github.com/Johnnykoch02?tab=repositories" target="_blank">Repositories</a> page on GitHub.
+            <p>Here you can find some more background information on all of the projects I have worked on. All of these projects I have referenced are not associated with any coursework or class projects from any University. For more references and a better look at some of the smaller projects I worked on, visit my <a href="https://github.com/Johnnykoch02?tab=repositories" target="_blank">Repositories</a> page on GitHub.</p>
+            <p>To collaborate on any of these projects feel free to contact me!</p>
+        </section>
 
-                To collaborate on any of these projects feel free to contact me!
-            </p>
-            <style>
-                .horizontal-line {
-                    width: 100%;
-                    height: 1px;
-                    background-color: grey;
-                    margin: 20px 0;
-                    }
-                .projects {
-                    list-style: none;
-                    position: relative;
-                }
-                .project-item {
-                    margin: 20px;
-                    padding-left: 60px;
-                    position: relative;
-                }
-                .project-content {
-                    margin: 10px 0;
-                }
-                .project-content img {
-                    max-width: 100%;
-                    height: auto;
-                }
-            </style>
-            <ul class="projects">
-                <div class="horizontal-line"></div>
-                <li class="project-item">
-                    <h2>RPAL Research: Advanced Object Manipulation using Berret Hand</h2>
-                    <div class="project-content">
+        <ul class="projects">
+            <div class="horizontal-line"></div>
+            <div class="horizontal-line"></div>
+            <li class="project-item">
+                <h2>Topaz Labs: ML Models for Image & Video Enhancement</h2>
+                <div class="project-content">
+                    <p>
+                        At Topaz Labs, I work on designing, training, and integrating ML models for various aspects of image and video processing:
+                    </p>
+                    <ul>
+                        <li>Quality Assessment Models: Developed models to evaluate image and video quality metrics</li>
+                        <li>Segmentation Models: Created advanced segmentation models for precise object and region detection</li>
+                        <li>Semantic Understanding: Implemented models for understanding image content and context</li>
+                        <li>Enhancement Pipeline: Architected a zero-click image and video enhancement pipeline for API users</li>
+                    </ul>
+                    <p>
+                        Key achievements include:
+                    </p>
+                    <ul>
+                        <li>Deployed internal tools for scalable data analysis and model comparison</li>
+                        <li>Implemented user data tracking and trained suggestion systems</li>
+                        <li>Developed autopilot tools for automated image enhancement</li>
+                    </ul>
+                    <video width="100%" controls>
+                        <source src="https://downloads.topazlabs.com/web-assets/brand_topazlabs.webm" type="video/webm">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </li>
+            <div class="horizontal-line"></div>
+            <li class="project-item">
+                <h2>Joby AI: Intelligent Job Matching Platform</h2>
+                <div class="project-content">
+                    <p>
+                        As a cofounder at Joby AI, I led the development of an intelligent job matching platform that leverages advanced AI technologies:
+                    </p>
+                    <ul>
+                        <li>Vector Search Models: Implemented and fine-tuned contrastive learning models for improved job matching accuracy</li>
+                        <li>LLM Agents: Developed sophisticated agents for automated job scraping from career pages and job boards</li>
+                        <li>Automation Tools: Created tools for automated job applications, increasing platform efficiency</li>
+                    </ul>
+                    <p>
+                        Notable achievements:
+                    </p>
+                    <ul>
+                        <li>Improved model inference costs while maintaining high accuracy</li>
+                        <li>Scaled to processing over 180,000 jobs daily from 12,000+ sources</li>
+                        <li>Increased monthly revenue by $5,000 through automation, job data marketting, and iterative customer based development</li>
+                        <li>Achieved 130% increase in weekly average platform usage</li>
+                    </ul>
+                </div>
+            </li>
+            <div class="horizontal-line"></div>
+            <li class="project-item">
+                <h2>RPAL Research: Advanced Object Manipulation using Berret Hand</h2>
+                <div class="project-content">
+                    <p>
+                        This research, conducted at the Robot Perception and Action Laboratory (RPAL) at the University of South Florida, focuses on enhancing robotic object manipulation through advanced machine learning techniques. Our goal is to achieve precise control in tasks such as controlled object dropping using the Berret Hand robot.
+                    </p>
+                    
+                    <h3>Berret Hand Representation Learning: A Multi-Objective Approach</h3>
+                    
+                    <div class="model-section">
+                        <h4>1. Encoder: The Foundation of State Representation</h4>
+                        <img src="/static/data/site_imgs/Research-Projects/encoder.png" alt="Berret Hand Encoder Architecture">
                         <p>
-                            This research, conducted at the Robot Perception and Action Laboratory (RPAL) at the University of South Florida, focuses on enhancing robotic object manipulation through advanced machine learning techniques. Our goal is to achieve precise control in tasks such as controlled object dropping using the Berret Hand robot.
-                        </p>
-                        
-                        <h3>Berret Hand Representation Learning: A Multi-Objective Approach</h3>
-                        
-                        <div class="model-section">
-                            <h4>1. Encoder: The Foundation of State Representation</h4>
-                            <img src="/static/data/site_imgs/Research-Projects/encoder.png" alt="Berret Hand Encoder Architecture">
-                            <p>
-                                Our encoder is the cornerstone of our architecture, designed to create rich, informative state embeddings:
-                                <ul>
-                                    <li>Processes diverse sensor inputs: tactile data, images, torque measurements, and joint angles</li>
-                                    <li>Employs a transformer-based architecture for capturing complex spatial and temporal relationships</li>
-                                    <li>Trained with multiple objectives to ensure comprehensive state representation:
-                                        <ul>
-                                            <li>Temporal encoding: Captures time-dependent features across sensor readings</li>
-                                            <li>Spatial encoding: Preserves relative positions and orientations of objects and hand components</li>
-                                            <li>Value encoding: Incorporates task-relevant information for decision making</li>
-                                            <li>State reconstruction: Ensures the embedding retains all essential information of the original state</li>
-                                        </ul>
-                                    </li>
-                                    <li>Aims to create a linear learned representation, facilitating efficient state transitions and predictions</li>
-                                </ul>
-                            </p>
-                        </div>
-                
-                        <div class="model-section">
-                            <h4>2. Dynamix Model: Forward Dynamics Prediction</h4>
-                            <img src="/static/data/site_imgs/Research-Projects/dynamix.png" alt="Dynamix Model Architecture">
-                            <p>
-                                The Dynamix model leverages the encoder to predict future states:
-                                <ul>
-                                    <li>Inputs: Current state embedding and action</li>
-                                    <li>Output: Predicted next state embedding</li>
-                                    <li>Key components:
-                                        <ul>
-                                            <li>Delta Network: Learns state transitions in the embedding space</li>
-                                            <li>Predictor: Generates the next state embedding</li>
-                                        </ul>
-                                    </li>
-                                    <li>Enables multi-step trajectory prediction in the embedding space</li>
-                                </ul>
-                            </p>
-                        </div>
-                
-                        <div class="model-section">
-                            <h4>3. Critiq Model: Inverse Dynamics and Reward Prediction</h4>
-                            <img src="/static/data/site_imgs/Research-Projects/critiq.png" alt="Critiq Model Architecture">
-                            <p>
-                                The Critiq model complements Dynamix by focusing on inverse dynamics:
-                                <ul>
-                                    <li>Inputs: Current and next state embeddings</li>
-                                    <li>Outputs: Predicted action and reward</li>
-                                    <li>Key components:
-                                        <ul>
-                                            <li>Predictor network: Estimates actions and rewards from state transitions</li>
-                                            <li>Time estimator: Provides temporal context for predictions</li>
-                                        </ul>
-                                    </li>
-                                    <li>Facilitates learning of action-consequence relationships and reward structures</li>
-                                </ul>
-                            </p>
-                        </div>
-                
-                        <div class="model-section">
-                            <h4>4. Multi-Task Learning Reflection</h4>
-                            <p>
-                                Our approach uniquely combines forward and inverse dynamics learning:
-                                <ul>
-                                    <li>Shared encoder ensures consistent state representation across models</li>
-                                    <li>Complementary learning objectives enhance the robustness of the state embeddings</li>
-                                    <li>The architecture allows for:
-                                        <ul>
-                                            <li>Efficient handling of complex relationships in a compact embedding space</li>
-                                            <li>Flexible temporal reasoning and multi-step prediction capabilities</li>
-                                            <li>Rich information extraction supporting diverse manipulation tasks</li>
-                                        </ul>
-                                    </li>
-                                    <li>This unified approach aims to create a versatile foundation for advanced robotic manipulation tasks</li>
-                                </ul>
-                            </p>
-                        </div>
-                
-                        <div class="results-section">
-                            <h4>5. Results and Performance Metrics</h4>
-                            <p>
-                                We are currently in the process of gathering comprehensive results. Future updates will include:
-                            </p>
+                            Our encoder is the cornerstone of our architecture, designed to create rich, informative state embeddings:
                             <ul>
-                                <li>Prediction accuracy comparisons between our models and baselines</li>
-                                <li>Training and validation loss curves demonstrating learning progress</li>
-                                <li>Task completion rates for various object manipulation scenarios</li>
-                                <li>Ablation studies highlighting the impact of different architectural choices</li>
+                                <li>Processes diverse sensor inputs: tactile data, images, torque measurements, and joint angles</li>
+                                <li>Employs a transformer-based architecture for capturing complex spatial and temporal relationships</li>
+                                <li>Trained with multiple objectives to ensure comprehensive state representation:
+                                    <ul>
+                                        <li>Temporal encoding: Captures time-dependent features across sensor readings</li>
+                                        <li>Spatial encoding: Preserves relative positions and orientations of objects and hand components</li>
+                                        <li>Value encoding: Incorporates task-relevant information for decision making</li>
+                                        <li>State reconstruction: Ensures the embedding retains all essential information of the original state</li>
+                                    </ul>
+                                </li>
+                                <li>Aims to create a linear learned representation, facilitating efficient state transitions and predictions</li>
                             </ul>
-                            <div class="graph-container">
-                                <!-- Placeholder for future graphs -->
-                                <p>Detailed performance graphs and metrics will be added here as results become available.</p>
-                            </div>
-                        </div>
-                
-                        <p>
-                            <a href="https://rpal.cse.usf.edu" target="_blank"><b>Visit RPAL Website</b></a>
-                            <img src="https://rpal.cse.usf.edu/images/logo.png" alt="USF RPAL Logo">
                         </p>
                     </div>
-                </li>
-                <div class="horizontal-line"></div>
-                <li class="project-item">
-                    <h2>Teach-a-Bull (IEEE AI Group)</h2>
-                    <div class="project-content">
-                        <p>What if high quality education was made available to students around the world regardless of socioeconomic status; as long as they had access to the internet? Many students who have access to an internet connection are unable to afford high quality and personalized education, and because of this they may miss out on opportunities to access higher education. Likewise, many tools that exist today to combat this problem are not interactive and personalized. We present "Teach-a-Bull", an extension of the research project <i>Large Language Models as Actors in Text-Based Environments (<a href="https://github.com/USF-IEEE/AITutor-Backend/blob/main/ResearchDocumentation.md">LLMaAiT-BE</a>).</i>Teach-a-Bull formalized graph-based generations over long-form text documents. For example, LLMaAiT-BE can be used formally for the generation of books, lectures, projects, papers, reports, playwrites, and more. This work enphisizes the narrow tasking and deconstruction of formal tasks into sub-components, and iteration on improval. </p>
-                        <p>This work also attempted to construct vairous value metrics for assessing the quality of long-form generation documents, including the distrobution recreation hypothesis. This metric can be summarized by considering the content item which you are trying to generate, and creating a region of a vector space for which this item needs to contained in. For example, consider N documents for a lecture on 19th century Americas constructed by various experts in the field. If semantically, the generated document is contained within the span of all of these documents semantically, than we can consider this generation as a success. In other words, we are checking to see if our document has been sampled from the same distrobution as the expert-generated documents.</p>
-
-                        <img src="https://epe.brightspotcdn.com/95/7c/8ecbf5e24d32a9e01f4c37d2e16d/ai-teacher-042023-1286808956-01.jpg">
-                        <br>
-                        <h4>Research Project:</h4>
-                        <ul>
-                            <li>This project extends work in LLMaAiTB-E: Graph-based generation of long-form text-based content. </li>
-                            <li>ILLMaAiTB-E: Formalizes and proposes a method to implement LLMs in complex state-based environments in which the model interacts with.</li>
-                            <li>Research project hypothesizes that LLMs can solve more complex problems by implementing a MDP</li>
-                            <li>Goal of LLMaAiTB-E: propose new methods for using LLMs to solve complex problems. Emphasis of data structure generation, argue that our method produces better generation quality via MDP modeling vs. one-shot prompting.</li>
-                            <li>Proposed a new metric in value estimating generation quality.</li>
-                        </ul>
-                        <br>
-                        <h4>GitHub:</h4>
-                        <ul>
-                            <li> <a href="https://github.com/USF-IEEE/AITutor-Backend">What runs the AI Tutor? (Open-Source Project)</a></li>
-                        </ul>
-                        <br>
-                        </p>
-                    </div>
-                </li>
-                <div class="horizontal-line"></div>
-                <li class="project-item">
-                    <h2>MicrogradPlus</h2>
-                    <div class="project-content">
-                        <p>An auto-differentiation computational graph library I extended from Andrej Karpathy's original <a href="https://github.com/karpathy/micrograd">Micrograd Project</a>. This extends the original scalar differentiation to support vector-ops in a similar style to that of PyTorch. For those who are interested in auto-differentiation with n-dimensional tensors, you can fork the source code down below. All modifications made to the original source code can be validated by the testing framework embedded into the project which utilizes PyTorch's auto-differentiation. </p>
-                        <img src="https://cdn-images-1.medium.com/max/2400/1*1mpE6fsq5LNxH31xeTWi5w.jpeg">
-                        <br>
-                        <h4>Future Exploration:</h4>
-                        <ul>
-                            <li>Introspecting optimization techniques</li>
-                            <li>Implementing a ShapeTracker; a mechanism to help determine gradients over tensors of changing sizes and dimensions. </li>
-                            <li>Incorporate kernel library for GPU support.</li>
-                        </ul>
-                        <br>
-                        <h4>GitHub:</h4>
-                        <ul>
-                            <li> <a href="https://github.com/johnnykoch02/MicrogradPlus">MicrogradPlus Source Code</a></li>
-                        </ul>
-                        <br>
-                        </p>
-                    </div>
-                </li>
-                <div class="horizontal-line"></div>
-                <li class="project-item">
-                    <h2>Numerai Competition Model (IEEE AI Group)</h2>
-                    <div class="project-content">
-                        <p>The IEEE AI group is tackling the Numerai Compeition with a state-of-the-art approach to data modeling. Our work attempts to combine the recent trend in large models with vast datasets to fit our models to the Numerai Competition Dataset. </p>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Numerai_logo.png">
             
-                        <h4>Architecture:</h4>
-                        <ul>
-                            <li>Numerai Feature Data -></li>
-                            <li>N-Way Mixture Model -></li>
-                            <li>M-Parallel Residual Blocks -> </li>
-                            <li>Fully Connected Layers -></li>
-                            <li>5 Feature Classifier</li>
-                        </ul>
-                        <br>
-                        <h4>Currently Working On:</h4>
-                        <ul>
-                            <li>Augmenting our Data for training/testing improvements.</li>
-                            <li>Test our Training Methods using a F-1 Score Threshold and Accuracy for further exploration</li>
-                            <li>Experimenting with different Training Algorithms (other than Gradient Descent)</li>
-                        </ul>
-                        <br>
-                        <h4>Goal:</h4>
-                        <p>Develop a highly expressive model with a high enough accuracy (>90%) on our testing/competition data to enter into the Numerai Competition.</p><br>
-                        <br>
-                        <h4>GitHub:</h4>
-                        <ul>
-                            <li><a href="https://github.com/Fintanch/Numerai-Competition-Model" target="_blank">View Project Here</a></li>
-                        </ul>
-                        <br>
+                    <div class="model-section">
+                        <h4>2. Dynamix Model: Forward Dynamics Prediction</h4>
+                        <img src="/static/data/site_imgs/Research-Projects/dynamix.png" alt="Dynamix Model Architecture">
+                        <p>
+                            The Dynamix model leverages the encoder to predict future states:
+                            <ul>
+                                <li>Inputs: Current state embedding and action</li>
+                                <li>Output: Predicted next state embedding</li>
+                                <li>Key components:
+                                    <ul>
+                                        <li>Delta Network: Learns state transitions in the embedding space</li>
+                                        <li>Predictor: Generates the next state embedding</li>
+                                    </ul>
+                                </li>
+                                <li>Enables multi-step trajectory prediction in the embedding space</li>
+                            </ul>
                         </p>
                     </div>
-                </li>
-                <div class="horizontal-line"></div>
-                <li class="project-item">
-                    <h2>Gwen the Virtual Assistant</h2>
-                    <div class="project-content">
-                        <p>Welcome to the repository for Gwen, a female virtual assistant agent who is the link between your voice activated prompts and your preferred compute platform. Through Python, Gwen is provided a platform to control and manage your desktop environment in hopes to perform tasks that you might otherwise find remedial.</p>
+            
+                    <div class="model-section">
+                        <h4>3. Critiq Model: Inverse Dynamics and Reward Prediction</h4>
+                        <img src="/static/data/site_imgs/Research-Projects/critiq.png" alt="Critiq Model Architecture">
+                        <p>
+                            The Critiq model complements Dynamix by focusing on inverse dynamics:
+                            <ul>
+                                <li>Inputs: Current and next state embeddings</li>
+                                <li>Outputs: Predicted action and reward</li>
+                                <li>Key components:
+                                    <ul>
+                                        <li>Predictor network: Estimates actions and rewards from state transitions</li>
+                                        <li>Time estimator: Provides temporal context for predictions</li>
+                                    </ul>
+                                </li>
+                                <li>Facilitates learning of action-consequence relationships and reward structures</li>
+                            </ul>
+                        </p>
+                    </div>
+            
+                    <div class="model-section">
+                        <h4>4. Multi-Task Learning Reflection</h4>
+                        <p>
+                            Our approach uniquely combines forward and inverse dynamics learning:
+                            <ul>
+                                <li>Shared encoder ensures consistent state representation across models</li>
+                                <li>Complementary learning objectives enhance the robustness of the state embeddings</li>
+                                <li>The architecture allows for:
+                                    <ul>
+                                        <li>Efficient handling of complex relationships in a compact embedding space</li>
+                                        <li>Flexible temporal reasoning and multi-step prediction capabilities</li>
+                                        <li>Rich information extraction supporting diverse manipulation tasks</li>
+                                    </ul>
+                                </li>
+                                <li>This unified approach aims to create a versatile foundation for advanced robotic manipulation tasks</li>
+                            </ul>
+                        </p>
+                    </div>
+            
+                    <div class="results-section">
+                        <h4>5. Results and Performance Metrics</h4>
+                        <p>
+                            We are currently in the process of gathering comprehensive results. Future updates will include:
+                        </p>
+                        <ul>
+                            <li>Prediction accuracy comparisons between our models and baselines</li>
+                            <li>Training and validation loss curves demonstrating learning progress</li>
+                            <li>Task completion rates for various object manipulation scenarios</li>
+                            <li>Ablation studies highlighting the impact of different architectural choices</li>
+                        </ul>
+                        <div class="graph-container">
+                            <!-- Placeholder for future graphs -->
+                            <p>Detailed performance graphs and metrics will be added here as results become available.</p>
+                        </div>
+                    </div>
+            
+                    <p>
+                        <a href="https://rpal.cse.usf.edu" target="_blank"><b>Visit RPAL Website</b></a>
+                        <img src="https://rpal.cse.usf.edu/images/logo.png" alt="USF RPAL Logo">
+                    </p>
+                </div>
+            </li>
+            <div class="horizontal-line"></div>
+            <li class="project-item">
+                <h2>Teach-a-Bull (IEEE AI Group)</h2>
+                <div class="project-content">
+                    <p>What if high quality education was made available to students around the world regardless of socioeconomic status; as long as they had access to the internet? Many students who have access to an internet connection are unable to afford high quality and personalized education, and because of this they may miss out on opportunities to access higher education. Likewise, many tools that exist today to combat this problem are not interactive and personalized. We present "Teach-a-Bull", an extension of the research project <i>Large Language Models as Actors in Text-Based Environments (<a href="https://github.com/USF-IEEE/AITutor-Backend/blob/main/ResearchDocumentation.md">LLMaAiT-BE</a>).</i>Teach-a-Bull formalized graph-based generations over long-form text documents. For example, LLMaAiT-BE can be used formally for the generation of books, lectures, projects, papers, reports, playwrites, and more. This work enphisizes the narrow tasking and deconstruction of formal tasks into sub-components, and iteration on improval. </p>
+                    <p>This work also attempted to construct vairous value metrics for assessing the quality of long-form generation documents, including the distrobution recreation hypothesis. This metric can be summarized by considering the content item which you are trying to generate, and creating a region of a vector space for which this item needs to contained in. For example, consider N documents for a lecture on 19th century Americas constructed by various experts in the field. If semantically, the generated document is contained within the span of all of these documents semantically, than we can consider this generation as a success. In other words, we are checking to see if our document has been sampled from the same distrobution as the expert-generated documents.</p>
+
+                    <img src="https://epe.brightspotcdn.com/95/7c/8ecbf5e24d32a9e01f4c37d2e16d/ai-teacher-042023-1286808956-01.jpg">
+                    <br>
+                    <h4>Research Project:</h4>
+                    <ul>
+                        <li>This project extends work in LLMaAiTB-E: Graph-based generation of long-form text-based content. </li>
+                        <li>ILLMaAiTB-E: Formalizes and proposes a method to implement LLMs in complex state-based environments in which the model interacts with.</li>
+                        <li>Research project hypothesizes that LLMs can solve more complex problems by implementing a MDP</li>
+                        <li>Goal of LLMaAiTB-E: propose new methods for using LLMs to solve complex problems. Emphasis of data structure generation, argue that our method produces better generation quality via MDP modeling vs. one-shot prompting.</li>
+                        <li>Proposed a new metric in value estimating generation quality.</li>
+                    </ul>
+                    <br>
+                    <h4>GitHub:</h4>
+                    <ul>
+                        <li> <a href="https://github.com/USF-IEEE/AITutor-Backend">What runs the AI Tutor? (Open-Source Project)</a></li>
+                    </ul>
+                    <br>
+                    </p>
+                </div>
+            </li>
+            <div class="horizontal-line"></div>
+            <li class="project-item">
+                <h2>MicrogradPlus</h2>
+                <div class="project-content">
+                    <p>An auto-differentiation computational graph library I extended from Andrej Karpathy's original <a href="https://github.com/karpathy/micrograd">Micrograd Project</a>. This extends the original scalar differentiation to support vector-ops in a similar style to that of PyTorch. For those who are interested in auto-differentiation with n-dimensional tensors, you can fork the source code down below. All modifications made to the original source code can be validated by the testing framework embedded into the project which utilizes PyTorch's auto-differentiation. </p>
+                    <img src="https://cdn-images-1.medium.com/max/2400/1*1mpE6fsq5LNxH31xeTWi5w.jpeg">
+                    <br>
+                    <h4>Future Exploration:</h4>
+                    <ul>
+                        <li>Introspecting optimization techniques</li>
+                        <li>Implementing a ShapeTracker; a mechanism to help determine gradients over tensors of changing sizes and dimensions. </li>
+                        <li>Incorporate kernel library for GPU support.</li>
+                    </ul>
+                    <br>
+                    <h4>GitHub:</h4>
+                    <ul>
+                        <li> <a href="https://github.com/johnnykoch02/MicrogradPlus">MicrogradPlus Source Code</a></li>
+                    </ul>
+                    <br>
+                    </p>
+                </div>
+            </li>
+            <div class="horizontal-line"></div>
+            <li class="project-item">
+                <h2>Numerai Competition Model (IEEE AI Group)</h2>
+                <div class="project-content">
+                    <p>The IEEE AI group is tackling the Numerai Compeition with a state-of-the-art approach to data modeling. Our work attempts to combine the recent trend in large models with vast datasets to fit our models to the Numerai Competition Dataset. </p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Numerai_logo.png">
+        
+                    <h4>Architecture:</h4>
+                    <ul>
+                        <li>Numerai Feature Data -></li>
+                        <li>N-Way Mixture Model -></li>
+                        <li>M-Parallel Residual Blocks -> </li>
+                        <li>Fully Connected Layers -></li>
+                        <li>5 Feature Classifier</li>
+                    </ul>
+                    <br>
+                    <h4>Currently Working On:</h4>
+                    <ul>
+                        <li>Augmenting our Data for training/testing improvements.</li>
+                        <li>Test our Training Methods using a F-1 Score Threshold and Accuracy for further exploration</li>
+                        <li>Experimenting with different Training Algorithms (other than Gradient Descent)</li>
+                    </ul>
+                    <br>
+                    <h4>Goal:</h4>
+                    <p>Develop a highly expressive model with a high enough accuracy (>90%) on our testing/competition data to enter into the Numerai Competition.</p><br>
+                    <br>
+                    <h4>GitHub:</h4>
+                    <ul>
+                        <li><a href="https://github.com/Fintanch/Numerai-Competition-Model" target="_blank">View Project Here</a></li>
+                    </ul>
+                    <br>
+                    </p>
+                </div>
+            </li>
+            <div class="horizontal-line"></div>
+            <li class="project-item">
+                <h2>Gwen the Virtual Assistant</h2>
+                <div class="project-content">
+                    <p>Welcome to the repository for Gwen, a female virtual assistant agent who is the link between your voice activated prompts and your preferred compute platform. Through Python, Gwen is provided a platform to control and manage your desktop environment in hopes to perform tasks that you might otherwise find remedial.</p>
+                    <h4>Current Features:</h4>
+                    <ul>
+                        <li>Automated Speech responses to your questions</li>
+                        <li>Verbally engage the system using the Wakeword</li>
+                        <li>Instruct the system to play any of the configured media sources such as Spotify, Netflix, YouTube, and more!</li>
+                    </ul>
+                    <br>
+                    <h4>Currently Working On:</h4>
+                    <ul>
+                        <li>Add more backend capability such as having conversations over context</li>
+                        <li>Fix Keyword model, retrain on more data</li>
+                        <li>Potentially move the backend to Tinygrad</li>
+                        <li>Reduce delay from the API calls, especially with GPT-3</li>
+                    </ul>
+                    <br>
+                    <h4>Future Research:</h4>
+                    <p>Development from here on out will take place on two different repos, 1 for Gwen and the other for the LL M server which will go onto a USF-IEEE GitHub Organization. Further enhancements include LLM Server and Trainer capabilities, Amazon integration for instant shopping, and reduction of delay in API calls. The project is open to any cool ideas, and collaboration with others brings exciting implementations into real systems.
+                        <a href="https://github.com/Johnnykoch02/VirtualAssistant" target="_blank"><b>Gwen Repo</b></a> | <a href="https://github.com/USF-IEEE/LLMServer" target="_blank"><b>LLM Server</b></a>
+                    <br>
+                    <h4>Amazon Integration:</h4>
+                    <ul>
+                        <li>Query Item Data</li>
+                        <li>Pull Item Reviews</li>
+                        <li>Recommend Items based on reviews and scores</li>
+                    </ul>
+                    <br>
+                    <h4>LLM Chains Of Thought:</h4>
+                    <ul>
+                        <li><a href="https://arxiv.org/pdf/2305.08291" target="_blank">Reference Paper</a></li>
+                    </ul>
+                    <br>
+                    </p>
+                    <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/Cu2ECSlPcfw/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/Cu2ECSlPcfw/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/Cu2ECSlPcfw/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by @jonathanzkoch</a></p></div></blockquote>
+<script async src="//www.instagram.com/embed.js"></script>
+                </div>
+            </li>
+            <div class="horizontal-line"></div>
+            <li class="project-item">
+                <h2>Reinforcement Learning in Chess</h2>
+                <div class="project-content">
+                    <p>
+                        This project revolves around applying reinforcement learning techniques to the game of chess, with a specific emphasis on utilizing Monte Carlo Tree Search to approximate the values of different game states through random simulations. A neural network is employed to emulate the simulation values for each node, supervised learning the state to the value discovered. As the model's approximation of value improves, reliance on state value predictions increases during the exploitation phase.
+                        <br><br>
+                        Drawing inspiration from DeepMind's AlphaGo and AlphaZero, the project aims for continuous innovation and growth. The future direction includes the integration of a policy network in addition to the value network, enhancing the complexity and effectiveness of the system.
+                        <br><br>
+                        <a href="https://github.com/Johnnykoch02/ChessEngine" target="_blank"><b>Visit Project</b></a>
+                    </p>
+                    <img src="https://i.stack.imgur.com/DsSXt.png" alt="Reinforcement Learning in Chess">
+                </div>
+            </li>
+            <div class="horizontal-line"></div>
+            <li class="project-item">
+                <h2>Robbie the DanciBULL Robot - USF Hackabull Entry</h2>
+                <div class="project-content">
+                    <img src="/static/data/site_imgs/Research-Projects/RobbieTheDancibullRobot.jpeg" alt="Reinforcement Learning in Chess">
+                    <p>
+                        In a remarkable 24-hour window, our mission was brought to life: a Simulated Robot that dances to any song. Leveraging policy and features extraction networks, the robot receives audio data and joint angles, outputting a probability distribution corresponding to the changes in each of the seventeen joints.
+                        <br><br>
+                        A unique and innovative data pipeline was constructed, using Just Dance Videos and a Joint-Angle Extraction algorithm for Offline Reinforcement Learning (RL), later perfecting the robot's motions through RL-HF. This imitation learning and pretraining process demonstrate potential for broader applications like cooking demonstrations, construction work, and painting.
+                        <br><br>
+                        The project's success exceeded expectations, turning a "huge leap of faith" into a triumphant demonstration of robot dancing. Special thanks to Matthew Elza, Kaylan Olivera, and Krish Veera for their faith, hard work, and dedication.
+                        <br><br>
+                        <a href="https://github.com/Johnnykoch02/USF-HackaBull-2023/tree/main" target="_blank"><b>Visit Project</b></a>
+                    </p>
+                    <iframe width="959" height="539" src="https://www.youtube.com/embed/zSz2d7ekwHU" title="Robbie the DanciBull Robot :D" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </li>  
+            <div class="horizontal-line"></div> 
+            <li class="project-item">
+                <h2>CoderSchoolAI: Making Agent AI Simple(r)</h2>
+                <div class="project-content">
+                    <p>
+                        <br>shell> pip3 install CoderSchoolAI && python3 -c "import CoderSchoolAI"
+                        <br><br>
+                        An initiative to make theoretical CS concepts of Agent AI accessible to kids. This educational program, built on a Python Library, simplifies complex Agent AI concepts, introducing search-based and neural network-based methods for building AI agents.
+                        <br><br>
+                        A Reinforcement Learning Library which I utilize in my robotics research and many of my agent-based projects.
+                        <br><br>
+                        Guiding the creation of agents through classic and learning-based methods, CoderSchoolAI serves as a comprehensive, open-source library focused on reinforcement learning. It offers an array of tools to create, train, and test agents, including various neural network blocks, game environments, abstract classes for agents, reinforcement learning algorithms, and replay buffers.
+                        <br><br>
+                        Written in Python and integrating with PyTorch, the library's design caters to both AI newcomers and seasoned developers. The main components include:
+                        <ul>
+                            <li>Neural: Assorted neural network blocks and tools.</li>
+                            <li>Environment: Game environments like SnakeEnvironment.</li>
+                            <li>Agent: Base class for different reinforcement learning agents.</li>
+                            <li>Training: Reinforcement learning algorithms and training facilitators.</li>
+                            <li>Buffer: Various types of replay buffers for experience replay.</li>
+                        </ul>
+                        <br>
                         <h4>Current Features:</h4>
                         <ul>
-                            <li>Automated Speech responses to your questions</li>
-                            <li>Verbally engage the system using the Wakeword</li>
-                            <li>Instruct the system to play any of the configured media sources such as Spotify, Netflix, YouTube, and more!</li>
+                            <li>RL Markov Model Environment(timestep <i>t</i>) -> (State, Action, New State, Reward, Done)</li>
+                            <li>Deep Q Learning with built-in Neural Block Library Support</li>
+                            <li>PPO learning with built-in Actor Critic Blocks for easy development and creation.</li>
+                            <li>Reinforcement Learning Utitities such as Replay Buffers and data tensor manipulation functions</li>
                         </ul>
                         <br>
-                        <h4>Currently Working On:</h4>
+                        <h4>Currently Developing:</h4>
                         <ul>
-                            <li>Add more backend capability such as having conversations over context</li>
-                            <li>Fix Keyword model, retrain on more data</li>
-                            <li>Potentially move the backend to Tinygrad</li>
-                            <li>Reduce delay from the API calls, especially with GPT-3</li>
+                            <li>RL Algorithm Support for TRPO, DDPG & HER</li>
+                            <li>Generalized Monte-Carlo Tree Search (DNN/Vanilla) Based.</li>
+                            <li>Further support for different Observation and Action Spaces including Gaussian (continuous)</li>
+                            <li>Make all built-in RL Algorithms utilizable via a simplified neural network API designed for learning</li>
                         </ul>
                         <br>
-                        <h4>Future Research:</h4>
-                        <p>Development from here on out will take place on two different repos, 1 for Gwen and the other for the LL M server which will go onto a USF-IEEE GitHub Organization. Further enhancements include LLM Server and Trainer capabilities, Amazon integration for instant shopping, and reduction of delay in API calls. The project is open to any cool ideas, and collaboration with others brings exciting implementations into real systems.
-                            <a href="https://github.com/Johnnykoch02/VirtualAssistant" target="_blank"><b>Gwen Repo</b></a> | <a href="https://github.com/USF-IEEE/LLMServer" target="_blank"><b>LLM Server</b></a>
-                        <br>
-                        <h4>Amazon Integration:</h4>
+                        <a href="https://github.com/theCoderSchoolTampa/CoderSchoolAI" target="_blank"><b>GitHub: CoderSchoolAI</b></a>
+                        <br><br>
+                        Whether you're an AI enthusiast, student, or researcher, this library aims to enhance your journey through AI. Feedback, suggestions, or sharing your projects are always welcome!
+                    </p>
+                    <!-- You can add an image or icon representing the project -->
+                    <img src="https://github.com/theCoderSchoolTampa/CoderSchoolAI/blob/master/CoderSchoolAI/Assets/CoderSchoolAI/CoderSchoolAI-Logo.png?raw=true" alt="CoderSchoolAI Logo">
+                </div>
+            </li>  
+            <div class="horizontal-line"></div>      
+            <li class="project-item">
+                <h2>TerriBULL Robotics: BullBot - Innovations in Robotics</h2>
+                <div class="project-content">
+                    <p>
+                        Collaborating within a global framework, the TerriBULL Robotics team embraced the rise of computing platforms and mainstream tech to infuse perception and automation into robotics through GPU-powered ML models and high compute devices.
+                        <br><br>
+                        <b>Architecture & System Description:</b>
+                        The architecture connects the V5 Brain microcontroller and Jetson for serial data communication and object detection/tracking. Key components include:
                         <ul>
-                            <li>Query Item Data</li>
-                            <li>Pull Item Reviews</li>
-                            <li>Recommend Items based on reviews and scores</li>
+                            <li>RoboController Class: Maintains overall system encapsulation.</li>
+                            <li>Task Manager: Manages autonomous actions and parallel task queues.</li>
+                            <li>Mechanical System: A higher-level abstraction layer for mechanisms like Shooters, Rollers, and Drive Systems.</li>
+                            <li>Serial Controller: Manages data transmission, linked with Jetson Controller.</li>
+                            <li>Jetson: Offloads computations for vision and calibration.</li>
+                            <li>Decision Model: Improves accuracy in path planning and object manipulation.</li>
                         </ul>
-                        <br>
-                        <h4>LLM Chains Of Thought:</h4>
+                        This innovative project offers autonomous responsiveness in a dynamic environment, extending to path-planning robots and environmental modeling systems.
+                        <br><br>
+                        <b>New Research Focus:</b>
+                        The Programming and AI Team is devoted to top-level competition through Software System Development and Machine Learning. It strives for optimized robot control and data throughput, while leveraging cutting-edge research in machine learning and Reinforcement Learning. The goal encompasses robust models for complex tasks, nonconventional model-based techniques, and data compression algorithms to enhance data transfer bandwidth. Our current focus is in robot modeling within a simulated environment, using offline and online reinforcement learning algorithms (DDPG+HER). Our goal is to have the robot learn the optimal policy for competing in the VEX Competition.
+                        <br><br>
+                        <a href="https://github.com/Johnnykoch02/BullBot" target="_blank"><b>GitHub: BullBot</b></a> | <a href="https://www.instagram.com/reel/CdJ00oyvc0V/"><b>Competition Video</b></a>
+                    </p>
+                    <img src="/static/data/site_imgs/About/smallbot_wired_up.jpg" alt="BullBot Logo">
+                </div>
+            </li>
+            <div class="horizontal-line"></div>
+            <li class="project-item">
+                <h2>Astaria: 2D Action RPG Adventure</h2>
+                <div class="project-content">
+                    <p>
+                        Astaria is a captivating 2D Action RPG game, akin to the Pokemon series, built using the Godot engine. This solo project spans over a month and offers an enthralling gaming experience.
+                        <br><br>
+                        <b>Game Features:</b>
                         <ul>
-                            <li><a href="https://arxiv.org/pdf/2305.08291" target="_blank">Reference Paper</a></li>
+                            <li><b>Arcade Mode:</b> Players face waves of relentless Bat enemies, each capable of damaging the player. Strategize and defeat them!</li>
+                            <li><b>Health Potions & Weapon Upgrades:</b> Keep an eye out for bat droppings that occasionally reward potions for health recovery and exciting weapon system upgrades.</li>
+                            <li><b>Charming Visuals:</b> Experience the world of Astaria with delightful 2D graphics and engaging gameplay dynamics.</li>
                         </ul>
-                        <br>
-                        </p>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/Cu2ECSlPcfw/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/Cu2ECSlPcfw/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/Cu2ECSlPcfw/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by @jonathanzkoch</a></p></div></blockquote>
-<script async src="//www.instagram.com/embed.js"></script>
-                    </div>
-                </li>
-                <div class="horizontal-line"></div>
-                <li class="project-item">
-                    <h2>Reinforcement Learning in Chess</h2>
-                    <div class="project-content">
-                        <p>
-                            This project revolves around applying reinforcement learning techniques to the game of chess, with a specific emphasis on utilizing Monte Carlo Tree Search to approximate the values of different game states through random simulations. A neural network is employed to emulate the simulation values for each node, supervised learning the state to the value discovered. As the model's approximation of value improves, reliance on state value predictions increases during the exploitation phase.
-                            <br><br>
-                            Drawing inspiration from DeepMind's AlphaGo and AlphaZero, the project aims for continuous innovation and growth. The future direction includes the integration of a policy network in addition to the value network, enhancing the complexity and effectiveness of the system.
-                            <br><br>
-                            <a href="https://github.com/Johnnykoch02/ChessEngine" target="_blank"><b>Visit Project</b></a>
-                        </p>
-                        <img src="https://i.stack.imgur.com/DsSXt.png" alt="Reinforcement Learning in Chess">
-                    </div>
-                </li>
-                <div class="horizontal-line"></div>
-                <li class="project-item">
-                    <h2>Robbie the DanciBULL Robot - USF Hackabull Entry</h2>
-                    <div class="project-content">
-                        <img src="/static/data/site_imgs/Research-Projects/RobbieTheDancibullRobot.jpeg" alt="Reinforcement Learning in Chess">
-                        <p>
-                            In a remarkable 24-hour window, our mission was brought to life: a Simulated Robot that dances to any song. Leveraging policy and features extraction networks, the robot receives audio data and joint angles, outputting a probability distribution corresponding to the changes in each of the seventeen joints.
-                            <br><br>
-                            A unique and innovative data pipeline was constructed, using Just Dance Videos and a Joint-Angle Extraction algorithm for Offline Reinforcement Learning (RL), later perfecting the robot's motions through RL-HF. This imitation learning and pretraining process demonstrate potential for broader applications like cooking demonstrations, construction work, and painting.
-                            <br><br>
-                            The project's success exceeded expectations, turning a "huge leap of faith" into a triumphant demonstration of robot dancing. Special thanks to Matthew Elza, Kaylan Olivera, and Krish Veera for their faith, hard work, and dedication.
-                            <br><br>
-                            <a href="https://github.com/Johnnykoch02/USF-HackaBull-2023/tree/main" target="_blank"><b>Visit Project</b></a>
-                        </p>
-                        <iframe width="959" height="539" src="https://www.youtube.com/embed/zSz2d7ekwHU" title="Robbie the DanciBull Robot :D" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    </div>
-                </li>  
-                <div class="horizontal-line"></div> 
-                <li class="project-item">
-                    <h2>CoderSchoolAI: Making Agent AI Simple(r)</h2>
-                    <div class="project-content">
-                        <p>
-                            <br>shell> pip3 install CoderSchoolAI && python3 -c "import CoderSchoolAI"
-                            <br><br>
-                            An initiative to make theoretical CS concepts of Agent AI accessible to kids. This educational program, built on a Python Library, simplifies complex Agent AI concepts, introducing search-based and neural network-based methods for building AI agents.
-                            <br><br>
-                            A Reinforcement Learning Library which I utilize in my robotics research and many of my agent-based projects.
-                            <br><br>
-                            Guiding the creation of agents through classic and learning-based methods, CoderSchoolAI serves as a comprehensive, open-source library focused on reinforcement learning. It offers an array of tools to create, train, and test agents, including various neural network blocks, game environments, abstract classes for agents, reinforcement learning algorithms, and replay buffers.
-                            <br><br>
-                            Written in Python and integrating with PyTorch, the library's design caters to both AI newcomers and seasoned developers. The main components include:
-                            <ul>
-                                <li>Neural: Assorted neural network blocks and tools.</li>
-                                <li>Environment: Game environments like SnakeEnvironment.</li>
-                                <li>Agent: Base class for different reinforcement learning agents.</li>
-                                <li>Training: Reinforcement learning algorithms and training facilitators.</li>
-                                <li>Buffer: Various types of replay buffers for experience replay.</li>
-                            </ul>
-                            <br>
-                            <h4>Current Features:</h4>
-                            <ul>
-                                <li>RL Markov Model Environment(timestep <i>t</i>) -> (State, Action, New State, Reward, Done)</li>
-                                <li>Deep Q Learning with built-in Neural Block Library Support</li>
-                                <li>PPO learning with built-in Actor Critic Blocks for easy development and creation.</li>
-                                <li>Reinforcement Learning Utitities such as Replay Buffers and data tensor manipulation functions</li>
-                            </ul>
-                            <br>
-                            <h4>Currently Developing:</h4>
-                            <ul>
-                                <li>RL Algorithm Support for TRPO, DDPG & HER</li>
-                                <li>Generalized Monte-Carlo Tree Search (DNN/Vanilla) Based.</li>
-                                <li>Further support for different Observation and Action Spaces including Gaussian (continuous)</li>
-                                <li>Make all built-in RL Algorithms utilizable via a simplified neural network API designed for learning</li>
-                            </ul>
-                            <br>
-                            <a href="https://github.com/theCoderSchoolTampa/CoderSchoolAI" target="_blank"><b>GitHub: CoderSchoolAI</b></a>
-                            <br><br>
-                            Whether you're an AI enthusiast, student, or researcher, this library aims to enhance your journey through AI. Feedback, suggestions, or sharing your projects are always welcome!
-                        </p>
-                        <!-- You can add an image or icon representing the project -->
-                        <img src="https://github.com/theCoderSchoolTampa/CoderSchoolAI/blob/master/CoderSchoolAI/Assets/CoderSchoolAI/CoderSchoolAI-Logo.png?raw=true" alt="CoderSchoolAI Logo">
-                    </div>
-                </li>  
-                <div class="horizontal-line"></div>      
-                <li class="project-item">
-                    <h2>TerriBULL Robotics: BullBot - Innovations in Robotics</h2>
-                    <div class="project-content">
-                        <p>
-                            Collaborating within a global framework, the TerriBULL Robotics team embraced the rise of computing platforms and mainstream tech to infuse perception and automation into robotics through GPU-powered ML models and high compute devices.
-                            <br><br>
-                            <b>Architecture & System Description:</b>
-                            The architecture connects the V5 Brain microcontroller and Jetson for serial data communication and object detection/tracking. Key components include:
-                            <ul>
-                                <li>RoboController Class: Maintains overall system encapsulation.</li>
-                                <li>Task Manager: Manages autonomous actions and parallel task queues.</li>
-                                <li>Mechanical System: A higher-level abstraction layer for mechanisms like Shooters, Rollers, and Drive Systems.</li>
-                                <li>Serial Controller: Manages data transmission, linked with Jetson Controller.</li>
-                                <li>Jetson: Offloads computations for vision and calibration.</li>
-                                <li>Decision Model: Improves accuracy in path planning and object manipulation.</li>
-                            </ul>
-                            This innovative project offers autonomous responsiveness in a dynamic environment, extending to path-planning robots and environmental modeling systems.
-                            <br><br>
-                            <b>New Research Focus:</b>
-                            The Programming and AI Team is devoted to top-level competition through Software System Development and Machine Learning. It strives for optimized robot control and data throughput, while leveraging cutting-edge research in machine learning and Reinforcement Learning. The goal encompasses robust models for complex tasks, nonconventional model-based techniques, and data compression algorithms to enhance data transfer bandwidth. Our current focus is in robot modeling within a simulated environment, using offline and online reinforcement learning algorithms (DDPG+HER). Our goal is to have the robot learn the optimal policy for competing in the VEX Competition.
-                            <br><br>
-                            <a href="https://github.com/Johnnykoch02/BullBot" target="_blank"><b>GitHub: BullBot</b></a> | <a href="https://www.instagram.com/reel/CdJ00oyvc0V/"><b>Competition Video</b></a>
-                        </p>
-                        <img src="/static/data/site_imgs/About/smallbot_wired_up.jpg" alt="BullBot Logo">
-                    </div>
-                </li>
-                <div class="horizontal-line"></div>
-                <li class="project-item">
-                    <h2>Astaria: 2D Action RPG Adventure</h2>
-                    <div class="project-content">
-                        <p>
-                            Astaria is a captivating 2D Action RPG game, akin to the Pokemon series, built using the Godot engine. This solo project spans over a month and offers an enthralling gaming experience.
-                            <br><br>
-                            <b>Game Features:</b>
-                            <ul>
-                                <li><b>Arcade Mode:</b> Players face waves of relentless Bat enemies, each capable of damaging the player. Strategize and defeat them!</li>
-                                <li><b>Health Potions & Weapon Upgrades:</b> Keep an eye out for bat droppings that occasionally reward potions for health recovery and exciting weapon system upgrades.</li>
-                                <li><b>Charming Visuals:</b> Experience the world of Astaria with delightful 2D graphics and engaging gameplay dynamics.</li>
-                            </ul>
-                            Astaria is more than a game; it's a fun and creative exploration that showcases the power of Godot and the imagination behind indie game development.
-                            <br><br>
-                            <a href="https://github.com/Johnnykoch02/Astaria" target="_blank"><b>GitHub: Astaria Project</b></a>
-                        </p>
-                        <!-- <img src="image_path.jpg" alt="Astaria Game Screenshot"> -->
-                    </div>
-                </li>                
-                <!-- Additional project items go here -->
-            </ul>             
-        </section>
-    </main>
-    <footer>
-        <p>Copyright &copy; 2023</p>
-    </footer>
+                        Astaria is more than a game; it's a fun and creative exploration that showcases the power of Godot and the imagination behind indie game development.
+                        <br><br>
+                        <a href="https://github.com/Johnnykoch02/Astaria" target="_blank"><b>GitHub: Astaria Project</b></a>
+                    </p>
+                    <!-- <img src="image_path.jpg" alt="Astaria Game Screenshot"> -->
+                </div>
+            </li>
+            <!-- Additional project items go here -->
+        </ul>             
+    </section>
+</main>
+<footer>
+    <p>Copyright &copy; 2024 Jonathan Koch</p>
+</footer>
+
+<script>
+    // Add smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Add scroll-based nav styling
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 100) {
+            nav.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+            nav.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+        } else {
+            nav.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+            nav.style.boxShadow = 'none';
+        }
+    });
+
+    // Add animation to project items
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.project-item').forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(20px)';
+        item.style.transition = 'all 0.5s ease-out';
+        item.style.transitionDelay = `${index * 0.1}s`;
+        observer.observe(item);
+    });
+</script>
 </body>
 </html>

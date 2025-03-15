@@ -23,7 +23,11 @@ ssh root@jonathanzkoch.dev
 
 cd Hosting/PortfolioWebsite/
 
+echo "Pulling latest changes..."
+
 git pull --force
+
+echo "Restarting PortfolioWebsite.service..."
 
 sudo systemctl restart PortfolioWebsite.service
 

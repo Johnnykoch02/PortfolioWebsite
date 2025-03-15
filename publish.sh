@@ -21,7 +21,7 @@ echo "Repository is clean. Proceeding with publication..."
 
 ssh root@jonathanzkoch.dev
 
-cd cd Hosting/PortfolioWebsite/
+cd Hosting/PortfolioWebsite/
 
 git pull --force
 

@@ -2,12 +2,15 @@
 #include "src/Helpers/routing.h"
 #include "src/Helpers/file_io.h"
 #include "src/Helpers/cache.h"
+#include "src/Helpers/strings.h"
 #include <pthread.h>
 #include <string.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h> // For DT_REG
 #include <time.h>
+
+char* BLOG_POSTS_DIR;
 
 #pragma once
 static const char *s_url = "https://0.0.0.0:443";
@@ -87,7 +90,7 @@ void load_blog_posts() {
     }
     
     // Open the blog posts directory
-    dir = opendir("static/blog_posts");
+    dir = opendir(BLOG_POSTS_DIR);
     if (dir == NULL) {
         printf("Error: Could not open blog posts directory\n");
         return;
@@ -161,7 +164,7 @@ void load_blog_posts() {
 static void route_blog_post(struct mg_connection *nc, struct mg_http_message* msg) {
     if (mg_vcmp(&msg->method, "GET") == 0) {
         // Extract the filename from the URI
-        char filename[256] = {0};
+        char filename[1024] = {0};
         if (sscanf((const char*)msg->uri.ptr, "/blog_post/%255s", filename) != 1) {
             serve_pnf(nc, 0, msg);
             return;
@@ -183,33 +186,39 @@ static void route_blog_post(struct mg_connection *nc, struct mg_http_message* ms
     }
 }
 
+static char* realloc_cat_free(char* a, char* b, size_t size_of_a) {
+    char* dest = (char*) realloc(a, strlen(a) + strlen(b) + 1);
+    strcat(dest, b);
+    if (dest != a) free(a);
+    return dest;
+}
+
 // Route handler for getting all blog posts as JSON
 static void route_blog_posts(struct mg_connection *nc, struct mg_http_message* msg) {
     if (mg_vcmp(&msg->method, "GET") == 0) {
         // Build JSON response
-        char* json = malloc(10240); // Allocate a reasonably large buffer
-        strcpy(json, "[");
+        SString* json = sstring_malloc(1024 * 8); // Malloc 8KB for JSON to start with
+        sstring_cat(json, "[");
         
         for (int i = 0; i < blog_post_count; i++) {
-            char post_json[4096];
+            SString* post_json = sstring_malloc(4096);
             char date_str[64];
             struct tm *tm_info = localtime(&blog_posts[i]->creation_date);
             strftime(date_str, sizeof(date_str), "%Y-%m-%dT%H:%M:%S", tm_info);
             
-            sprintf(post_json, 
-                    "%s{\"filename\":\"%s\",\"date\":\"%s\",\"content\":", 
-                    (i > 0 ? "," : ""), 
-                    blog_posts[i]->filename, 
-                    date_str);
-            
-            strcat(json, post_json);
-            
+            sprintf(post_json->str, "%s{\"filename\":\"%s\",\"date\":\"%s\",\"content\":", 
+            (i > 0 ? "," : ""), 
+            blog_posts[i]->filename, 
+            date_str);
+
+            sstring_cat(json, post_json->str);
             // Add content as JSON string (need to escape special chars)
-            strcat(json, "\"");
+            sstring_cat(json, "\"");
             
             // Simple escaping of quotes and backslashes in content
-            char* escaped_content = malloc(blog_posts[i]->content_size * 2);
-            char* p = escaped_content;
+            size_t escaped_content_size = blog_posts[i]->content_size * 2;
+            SString* escaped_content = sstring_malloc(escaped_content_size);
+            char* p = escaped_content->str;
             for (size_t j = 0; j < blog_posts[i]->content_size; j++) {
                 char c = blog_posts[i]->content[j];
                 if (c == '\"' || c == '\\') {
@@ -226,20 +235,23 @@ static void route_blog_posts(struct mg_connection *nc, struct mg_http_message* m
                 }
             }
             *p = '\0';
-            
-            strcat(json, escaped_content);
-            strcat(json, "\"}");
-            free(escaped_content);
+
+            sstring_cat(json, escaped_content->str);
+            sstring_cat(json, "\"}");
+            sstring_free(escaped_content);
+            sstring_free(post_json);
         }
+
         
-        strcat(json, "]");
+        sstring_cat(json, "]");
+        size_t json_size = strlen(json->str);
         
         // Send JSON response
         mg_printf(nc, "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: %ld\r\n\r\n", 
-                  strlen(json));
-        mg_send(nc, json, strlen(json));
-        
-        free(json);
+                  json_size);
+        mg_send(nc, json->str, json_size);
+        printf("Sent blog posts: %s\n", json->str);
+        sstring_free(json);
     }
 }
 
@@ -467,6 +479,34 @@ static void handle_routes(struct mg_connection * nc, int ev, void* ev_data, void
 
 int main(int argc, char** args) {
     root_directory = args[1];
+    BLOG_POSTS_DIR = malloc(1048);
+    // Get the root directory from the file path to this executable
+    char executable_path[1024] = {0};
+    ssize_t len = readlink("/proc/self/exe", executable_path, sizeof(executable_path) - 1);
+    if (len != -1) {
+        executable_path[len] = '\0';
+        // Find the last slash to get the directory
+        char* last_slash = strrchr(executable_path, '/');
+        if (last_slash != NULL) {
+            *last_slash = '\0'; // Truncate at the last slash to get directory
+            printf("Executable directory: %s\n", executable_path);
+        } else {
+            printf("Could not determine executable directory, using current directory\n");
+            strcpy(executable_path, ".");
+        }
+    } else {
+        perror("readlink failed");
+        strcpy(executable_path, ".");
+    }
+    
+    // If root_directory is not provided as argument, use the executable directory
+    if (argc < 2 || args[1] == NULL) {
+        root_directory = executable_path;
+        printf("Using executable directory as root: %s\n", root_directory);
+    }
+    BLOG_POSTS_DIR[0] = '\0';
+    strcat(BLOG_POSTS_DIR, root_directory);
+    strcat(BLOG_POSTS_DIR, "/static/static/blog_posts");
     /* HTTPS Certificates*/
     struct server_certs certs;
     load_certificates(&certs);

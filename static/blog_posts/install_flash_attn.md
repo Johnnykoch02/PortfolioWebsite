@@ -3,7 +3,7 @@
 *Posted: March 16, 2025*
 
 
-Over this past week, I ran into a bunch of dead ends and open issues trying to install `flash-attn` in a Docker container. I thought I'd make a post about the solution here in case anyone else runs into the same problem.
+Over this past week, I ran into a bunch of dead ends and open issues trying to install `flash-attn` in a Docker container. I thought I'd make a post about the solution here in case anyone else runs into the same problem!
 
 
 ## Issues

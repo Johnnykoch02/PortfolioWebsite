@@ -31,7 +31,7 @@ At Hirebase, we grew from processing a few tens of thousands of jobs to over 180
 • Data quality issues amplified with scale
 ```
 
-Solving these problems is always a challenge, but we were able to overcome them by continuously iterating on our models and infrastructure to drive the overhead costs down and improve the quality of our data.
+Solving these problems is always a challenge, but we were able to overcome them by continuously iterating on our models and infrastructure to drive the overhead costs down and improve the quality of our data. My intution here is to always look for components in your system that are driving up your costs and try to find ways to reduce them. Never be afraid to `Ctr+A` and `Del`.
 
 ## Looking Forward
 

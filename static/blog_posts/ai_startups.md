@@ -1,4 +1,4 @@
-# AI Startups
+# AI Startups and Semantics
 
 *Posted: December 15, 2024*
 
@@ -23,3 +23,27 @@ In my current projects, I've been concentrating on:
 ## Scaling Challenges
 
 As with any technology startup, scaling AI systems presents unique challenges:
+At Hirebase, we grew from processing a few tens of thousands of jobs to over 180,000k daily. This growth brought with it significant scaling challenges:
+
+```
+• Scraping infrastructure needed massive parallelization
+• Inference costs threatened to outpace revenue
+• Data quality issues amplified with scale
+```
+
+Solving these problems is always a challenge, but we were able to overcome them by continuously iterating on our models and infrastructure to drive the overhead costs down and improve the quality of our data.
+
+## Looking Forward
+
+The future of AI in recruitment is moving toward ever more personalized experiences. My piece in this is to become as talented as possible in the semantic search space. At every business and organization I've worked at, I've seen a massive amount of untapped potential in this space, and many times its been part of a core value proposition that drives revenue for the business. Currently, this is my main focus; semantic search over large datasets of structured information will drive a ton of value for existing and new businesses alike.
+
+## My perspective on the semantic search and retrieval space
+
+1. I believe in focusing relentlessly on user problems, not technology
+2. I believe in building rapid feedback mechanisms into your product and allow this to drive your product development
+3. I believe in being willing to always try something new if you're not seeing the returns you want
+4. I believe in preparing for the "cold start" problem with any recommendation system, and be willing to iterate on your data collection strategy and model updates to improve your system
+5. I believe in the importance of data quality and coverage. Anybody can build a simple recomendation system, but building the best system requires a deep understanding of the problem you're trying to solve and constantly improving the quality of the models your builing.
+
+
+If you have any thoughts or feedback on this post, I'd love to hear from you! Feel free to reach out on [X](https://x.com/jonathanzkoch) or [LinkedIn](https://www.linkedin.com/in/jonathanzkoch/).
